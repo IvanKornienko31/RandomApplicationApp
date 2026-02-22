@@ -1,0 +1,7 @@
+TEAM_ID=
+
+PRODUCT_NAME=RandomApplication
+PRODUCT_BUNDLE_IDENTIFIER=com.github.ivankornienko31.randomapplication.RandomApplication$(TEAM_ID)
+
+CURRENT_PROJECT_VERSION=1
+MARKETING_VERSION=1.0
