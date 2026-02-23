@@ -21,7 +21,7 @@ import randomapplication.composeapp.generated.resources.compose_multiplatform
 
 @Composable
 @Preview
-fun App() {
+fun Router() {
     MaterialTheme {
         var showContent by remember { mutableStateOf(false) }
         Column(
