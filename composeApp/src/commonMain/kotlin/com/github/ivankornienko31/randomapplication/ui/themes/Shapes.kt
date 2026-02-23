@@ -1,0 +1,12 @@
+package com.github.ivankornienko31.randomapplication.ui.themes
+
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.graphics.Shape
+
+class CustomShapes {
+    companion object {
+        val unifiedShape: Shape = RoundedCornerShape(CustomDimens.inputCornerRadius)
+        val pictureShape: Shape = RoundedCornerShape(CustomDimens.pictureCornerRadius)
+        val dividerShape: Shape = RoundedCornerShape(percent = 50)
+    }
+}
