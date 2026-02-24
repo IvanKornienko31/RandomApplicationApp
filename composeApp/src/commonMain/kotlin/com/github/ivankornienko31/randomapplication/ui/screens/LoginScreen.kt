@@ -6,36 +6,52 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.LocalAutofillHighlightBrush
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.autofill.ContentType
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.semantics.contentType
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import com.github.ivankornienko31.randomapplication.extensions.isValidEmail
-import com.github.ivankornienko31.randomapplication.ui.themes.CustomDimens
-import com.github.ivankornienko31.randomapplication.ui.themes.CustomModifiers
-import com.github.ivankornienko31.randomapplication.ui.themes.CustomShapes
-import com.github.ivankornienko31.randomapplication.ui.themes.CustomTextStyles
+import com.github.ivankornienko31.randomapplication.ui.themes.*
 import io.github.aakira.napier.Napier
+import org.jetbrains.compose.resources.stringResource
+import randomapplication.composeapp.generated.resources.Res
+import randomapplication.composeapp.generated.resources.*
 
 @Composable
-fun LoginScreen() {
+fun LoginScreen(
+    id: String
+) {
     Scaffold(modifier = CustomModifiers.scaffoldModifier) { innerPadding ->
-        BoxWithConstraints (
+        BoxWithConstraints(
             modifier = CustomModifiers.constraintModifier(innerPadding),
             contentAlignment = Alignment.Center
         ) {
             val isLandscape = maxWidth > maxHeight
+
+            val emailState = rememberSaveable { mutableStateOf("") }
+            val passwordState = rememberSaveable { mutableStateOf("") }
+            val errorState = rememberSaveable { mutableStateOf(false) }
+            val focusState = rememberSaveable { mutableStateOf(false) }
 
             if (isLandscape) {
                 Row(
@@ -48,7 +64,12 @@ fun LoginScreen() {
                 ) {
                     HelperText()
 
-                    InputContent()
+                    InputContent(
+                        emailState = emailState,
+                        passwordState = passwordState,
+                        errorState = errorState,
+                        focusState = focusState
+                    )
                 }
             } else {
                 Column(
@@ -61,10 +82,19 @@ fun LoginScreen() {
                 ) {
                     HelperText()
 
-                    InputContent()
+                    InputContent(
+                        emailState = emailState,
+                        passwordState = passwordState,
+                        errorState = errorState,
+                        focusState = focusState
+                    )
                 }
             }
         }
+    }
+
+    LaunchedEffect(id) {
+        Napier.d(tag = "Data From MainScreen") { "Received Data: $id" }
     }
 }
 
@@ -78,10 +108,13 @@ fun HelperText() {
                 alignment = Alignment.CenterVertically
             ),
         ) {
-            Text("Вход", style = CustomTextStyles.headerStyle)
+            Text(
+                text = stringResource(Res.string.login_screen_greeting),
+                style = CustomTextStyles.headerStyle
+            )
 
             Text(
-                "Пожалуйста, введите данные для входа",
+                text = stringResource(Res.string.login_screen_hint),
                 style = CustomTextStyles.mainTextStyle
             )
         }
@@ -90,18 +123,30 @@ fun HelperText() {
 
 
 @Composable
-fun InputContent() {
+fun InputContent(
+    emailState: MutableState<String>,
+    passwordState: MutableState<String>,
+    errorState: MutableState<Boolean>,
+    focusState: MutableState<Boolean>
+) {
     Box {
-        Column (
+        Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(
                 space = CustomDimens.spaceBetweenElements,
                 alignment = Alignment.CenterVertically
             )
         ) {
-            EmailTextField()
+            val autofillHighlightColor = SolidColor(Color.Transparent)
 
-            PasswordTextField()
+            CompositionLocalProvider(
+                LocalAutofillHighlightBrush provides autofillHighlightColor
+            ) {
+                EmailTextField(emailState, errorState, focusState)
+
+                PasswordTextField(passwordState)
+            }
+
 
             AcceptButton()
         }
@@ -109,35 +154,52 @@ fun InputContent() {
 }
 
 @Composable
-fun EmailTextField() {
-    var email by rememberSaveable { mutableStateOf("") }
-    var isError by rememberSaveable { mutableStateOf(false) }
+fun EmailTextField(
+    emailState: MutableState<String>,
+    errorState: MutableState<Boolean>,
+    focusState: MutableState<Boolean>
+) {
+    var email by emailState
+    var isError by errorState
+    var wasFocused by focusState
 
     OutlinedTextField(
         value = email,
         onValueChange = {
             email = it
-            val trimmed = it.trim()
-            isError = !trimmed.isValidEmail()
+            if (isError) isError = false
         },
         isError = isError,
         supportingText = if (isError) {
             {
                 Text(
-                    if (email.trim().isEmpty()) "Это поле не может быть пустым!"
-                    else "Пожалуйста, введите корректный email-адрес"
+                    text = stringResource(
+                        if (email.trim().isEmpty()) Res.string.input_field_is_empty
+                        else Res.string.input_field_incorrect_email_format
+                    )
                 )
             }
         } else null,
-        label = { Text("Email") },
-        placeholder = { Text("Введите email") },
+        label = { Text(text = stringResource(Res.string.text_field_email_label)) },
+        placeholder = { Text(text = stringResource(Res.string.text_field_email_placeholder)) },
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Email,
             imeAction = ImeAction.Next
         ),
         singleLine = true,
         shape = CustomShapes.unifiedShape,
-        modifier = CustomModifiers.inputModifier,
+        modifier = CustomModifiers.inputModifier.semantics {
+            contentType = ContentType.EmailAddress
+        }.onFocusChanged { focusState ->
+            if (focusState.isFocused) {
+                wasFocused = true
+            } else {
+                if (wasFocused) {
+                    val trimmedData = email.trim()
+                    isError = !trimmedData.isValidEmail()
+                }
+            }
+        },
     )
 
     LaunchedEffect(isError, email) {
@@ -148,23 +210,23 @@ fun EmailTextField() {
 }
 
 @Composable
-fun PasswordTextField() {
-    var password by rememberSaveable { mutableStateOf("") }
+fun PasswordTextField(passwordState: MutableState<String>) {
+    var password by passwordState
 
     OutlinedTextField(
         value = password,
         onValueChange = {
             password = it
         },
-        label = { Text("Пароль") },
-        placeholder = { Text("Введите пароль") },
+        label = { Text(text = stringResource(Res.string.text_field_password_label)) },
+        placeholder = { Text(text = stringResource(Res.string.text_field_password_placeholder)) },
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Password,
             imeAction = ImeAction.Done
         ),
         singleLine = true,
         shape = CustomShapes.unifiedShape,
-        modifier = CustomModifiers.inputModifier,
+        modifier = CustomModifiers.inputModifier.semantics { contentType = ContentType.Password },
         visualTransformation = PasswordVisualTransformation()
     )
 
@@ -179,12 +241,14 @@ fun AcceptButton() {
         onClick = { Napier.d(tag = "Button Clicked!..") { "...but nothing happens =(" } },
         modifier = CustomModifiers.buttonModifier,
         shape = CustomShapes.unifiedShape,
-        content = { Text("Войти", style = CustomTextStyles.buttonFontStyle) },
+        content = { Text(text = stringResource(Res.string.button_action), style = CustomTextStyles.buttonFontStyle) },
     )
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, locale = "en", apiLevel = 31)
 @Composable
 fun LoginScreenPreview() {
-    LoginScreen()
+    RandomAppTheme {
+        LoginScreen("")
+    }
 }

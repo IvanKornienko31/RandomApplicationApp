@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -19,7 +18,15 @@ import coil3.compose.AsyncImage
 import com.github.ivankornienko31.randomapplication.ui.themes.CustomDimens
 import com.github.ivankornienko31.randomapplication.ui.themes.CustomModifiers
 import com.github.ivankornienko31.randomapplication.ui.themes.CustomTextStyles
+import com.github.ivankornienko31.randomapplication.ui.themes.RandomAppTheme
 import io.github.aakira.napier.Napier
+import org.jetbrains.compose.resources.stringResource
+import randomapplication.composeapp.generated.resources.Res
+import randomapplication.composeapp.generated.resources.button_action
+import randomapplication.composeapp.generated.resources.main_screen_dream
+import randomapplication.composeapp.generated.resources.main_screen_greeting
+import randomapplication.composeapp.generated.resources.main_screen_nice
+import randomapplication.composeapp.generated.resources.main_screen_picture_description
 
 @Composable
 fun GreetingScreen(navigateToLogin: () -> Unit) {
@@ -69,7 +76,7 @@ fun LoadedImage() {
         AsyncImage(
             model = "https://i.pinimg.com/736x/3d/6d/df/3d6ddfdbf109791c85c9facf5286d741.jpg",
             onSuccess = { Napier.d(tag = "Image state") { "Image was loaded successfully" } },
-            contentDescription = "Falling Star",
+            contentDescription = stringResource(Res.string.main_screen_picture_description),
             contentScale = ContentScale.Crop
         )
     }
@@ -91,7 +98,10 @@ fun BodyContent(navigateToLogin: () -> Unit) {
                         alignment = Alignment.CenterVertically
                     )
                 ) {
-                    Text("Привет!", style = CustomTextStyles.headerStyle)
+                    Text(
+                        text = stringResource(Res.string.main_screen_greeting),
+                        style = CustomTextStyles.headerStyle
+                    )
 
                     HorizontalDivider(
                         thickness = CustomDimens.dividerThickness,
@@ -100,12 +110,12 @@ fun BodyContent(navigateToLogin: () -> Unit) {
                     )
 
                     Text(
-                        "Рад видеть тебя снова =)",
+                        text = stringResource(Res.string.main_screen_nice),
                         style = CustomTextStyles.mainTextStyle
                     )
 
                     Text(
-                        "Нажми на кнопку, чтобы войти в свой аккаунт и помечтать",
+                        text = stringResource(Res.string.main_screen_dream),
                         style = CustomTextStyles.mainTextStyle
                     )
                 }
@@ -115,19 +125,21 @@ fun BodyContent(navigateToLogin: () -> Unit) {
                     onClick = navigateToLogin,
                     content = {
                         Text(
-                            "Войти",
+                            text = stringResource(Res.string.button_action),
                             style = CustomTextStyles.buttonFontStyle
                         )
                     },
-                    modifier = CustomModifiers.buttonModifier.width(CustomDimens.greetingButtonWidth)
+                    modifier = CustomModifiers.buttonModifier
                 )
             }
         }
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, locale = "en")
 @Composable
 fun GreetingScreenPreview() {
-    GreetingScreen { }
+    RandomAppTheme {
+        GreetingScreen {}
+    }
 }

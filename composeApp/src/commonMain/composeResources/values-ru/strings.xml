@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="main_screen_picture_description">Падающая звезда</string>
+    <string name="main_screen_greeting">Привет!</string>
+    <string name="main_screen_nice">Рад видеть тебя снова =)</string>
+    <string name="main_screen_dream">Нажми на кнопку, чтобы войти в свой аккаунт и помечтать</string>
+    <string name="button_action">Войти</string>
+    <string name="login_screen_greeting">Вход</string>
+    <string name="login_screen_hint">Пожалуйста, введите данные для входа</string>
+    <string name="input_field_is_empty">Это поле не может быть пустым!</string>
+    <string name="input_field_incorrect_email_format">Пожалуйста, введите корректный email-адрес</string>
+    <string name="text_field_email_placeholder">Введите email</string>
+    <string name="text_field_password_label">Пароль</string>
+    <string name="text_field_password_placeholder">Введите пароль</string>
+</resources>
