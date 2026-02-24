@@ -3,6 +3,16 @@ package com.github.ivankornienko31.randomapplication.ui.themes
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 
+/**
+ * Данный файл представляет адаптацию темы приложения на iOS
+ *
+ * Так как у iOS нет фичи dynamicColor, переключение между темами происходит без его участия
+ * @param darkTheme Флаг, определяющий текущую тему приложения
+ * @param content Composables, передаваемые как потомки
+ *
+ * @author Иван Корниенко
+ */
+
 @Composable
 actual fun RandomAppTheme(
     darkTheme: Boolean,

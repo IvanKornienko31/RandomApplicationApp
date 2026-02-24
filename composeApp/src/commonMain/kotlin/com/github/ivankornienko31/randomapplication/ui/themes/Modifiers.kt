@@ -10,6 +10,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 
+/**
+ * TODO: в дальнейшем добавить документацию для модификаторов объектов
+ * @author Иван Корниенко
+ */
+
 class CustomModifiers {
     companion object {
         val scaffoldModifier: Modifier = Modifier.fillMaxSize()

@@ -3,6 +3,11 @@ package com.github.ivankornienko31.randomapplication.ui.themes
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
+/**
+ * TODO: в дальнейшем добавить документацию для размеров
+ * @author Иван Корниенко
+ */
+
 class CustomDimens {
     companion object {
         val buttonHeight: Dp = 56.dp

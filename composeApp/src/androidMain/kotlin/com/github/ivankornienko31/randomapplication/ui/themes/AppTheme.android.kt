@@ -7,6 +7,16 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 
+/**
+ * Данный файл представляет адаптацию темы приложения на Android
+ *
+ * @param darkTheme Флаг, определяющий текущую тему приложения
+ * @param dynamicColor Флаг, определяющий наличие функции Material You
+ * @param content Composables, передаваемые как потомки
+ *
+ * @author Иван Корниенко
+ */
+
 @Composable
 actual fun RandomAppTheme(
     darkTheme: Boolean,

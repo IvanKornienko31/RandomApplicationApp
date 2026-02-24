@@ -28,6 +28,23 @@ import randomapplication.composeapp.generated.resources.main_screen_greeting
 import randomapplication.composeapp.generated.resources.main_screen_nice
 import randomapplication.composeapp.generated.resources.main_screen_picture_description
 
+/**
+ * [GreetingScreen] является стартовым экраном приложения
+ *
+ * Общие `Composables`:
+ * - [AsyncImage] - предоставлено Coil
+ * - [Text]
+ * - [HorizontalDivider] - горизонтальная черта под строкой "Привет"
+ * - [Button]
+ *
+ * Дополнительные `Composables`:
+ * - [BoxWithConstraints] - необходимо для адаптации `Composable` при повороте экрана
+ *
+ * Весь текст добавлен через `strings.xml` из `composeResources`
+ *
+ * @author Иван Корниенко
+ * @param navigateToLogin Callback для навигации к экрану [LoginScreen]*/
+
 @Composable
 fun GreetingScreen(navigateToLogin: () -> Unit) {
     Scaffold(modifier = CustomModifiers.scaffoldModifier) { innerPadding ->
@@ -68,6 +85,18 @@ fun GreetingScreen(navigateToLogin: () -> Unit) {
     }
 }
 
+/**
+ * [LoadedImage] является контейнером картинки, загружаемой через Coil.
+ *
+ * При повороте телефона в горизонтальное положение картинка перемещается в левую сторону экрана
+ *
+ * Общие `Composables`:
+ * - [AsyncImage] - предоставлено Coil
+ *
+ * В параметр [onSuccess] элемента [AsyncImage] добавлено логирование, срабатывающее при успешной загрузке изображения
+ *
+ * @author Иван Корниенко*/
+
 @Composable
 fun LoadedImage() {
     Box(
@@ -81,6 +110,22 @@ fun LoadedImage() {
         )
     }
 }
+
+/**
+ * [BodyContent] является `Composable`, содержащим все остальные базовые элементы: текст, кнопки и горизонтальная черта.
+ *
+ * Необходимость в этом `Composable` заключается в том, чтобы разграничить картинку от остального контента, если экран находится в горизонтальном положении
+ *
+ * При повороте телефона в горизонтальное положение `Composable` перемещается в правую сторону экрана
+ *
+ * Общие `Composables`:
+ * - [Text]
+ * - [HorizontalDivider] - горизонтальная черта под строкой "Привет"
+ * - [Button]
+ *
+ * @param navigateToLogin Callback для навигации к экрану [LoginScreen]
+ *
+ * @author Иван Корниенко*/
 
 @Composable
 fun BodyContent(navigateToLogin: () -> Unit) {
@@ -135,6 +180,15 @@ fun BodyContent(navigateToLogin: () -> Unit) {
         }
     }
 }
+
+/**
+ * Превью для свёрстанного экрана [GreetingScreen].
+ *
+ * По умолчанию стоит английская локаль, также показывается фон приложения.
+ *
+ * [GreetingScreen] обернут в [RandomAppTheme], чтобы применить цветовую палитру.
+ *
+ * @author Иван Корниенко*/
 
 @Preview(showBackground = true, locale = "en")
 @Composable
