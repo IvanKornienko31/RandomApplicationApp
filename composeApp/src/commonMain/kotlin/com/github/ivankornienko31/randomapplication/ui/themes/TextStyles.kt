@@ -6,6 +6,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 
+/**
+ * TODO: в дальнейшем добавить документацию для типографики
+ * @author Иван Корниенко
+ */
+
 class CustomFontSizes {
     companion object {
         val buttonFontSize: TextUnit = 24.sp

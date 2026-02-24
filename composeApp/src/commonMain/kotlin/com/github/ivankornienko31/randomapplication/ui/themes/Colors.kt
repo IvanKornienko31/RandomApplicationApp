@@ -2,6 +2,11 @@ package com.github.ivankornienko31.randomapplication.ui.themes
 
 import androidx.compose.ui.graphics.Color
 
+/**
+ * TODO: в дальнейшем добавить документацию для цветов
+ * @author Иван Корниенко
+ */
+
 val Blue80 = Color(0xFFD0BCFF)
 val DimmedBlue80 = Color(0xFFCCC2DC)
 val LightBlue80 = Color(0xFFEFB8C8)

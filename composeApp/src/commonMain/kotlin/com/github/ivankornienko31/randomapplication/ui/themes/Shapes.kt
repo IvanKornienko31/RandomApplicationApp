@@ -3,6 +3,11 @@ package com.github.ivankornienko31.randomapplication.ui.themes
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.graphics.Shape
 
+/**
+ * TODO: в дальнейшем добавить документацию для фигур
+ * @author Иван Корниенко
+ */
+
 class CustomShapes {
     companion object {
         val unifiedShape: Shape = RoundedCornerShape(CustomDimens.inputCornerRadius)

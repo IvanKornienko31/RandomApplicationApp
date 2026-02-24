@@ -11,13 +11,17 @@ import io.github.aakira.napier.Napier
  * логирование выносить в отдельный класс, характеризующий приложение.
  *
  * Соответствующий класс добавлен в AndroidManifest в тег `<application>`
+ *
+ * *Примечание:* данная функция пока что работает только для Android. В iOS будет внедрено позднее
+ *
+ * @author Иван Корниенко
  */
 
 class MainApp : Application() {
     override fun onCreate() {
         super.onCreate()
 
-//      Инициализация логов Napier
+        // Инициализация логов Napier
         Napier.base(DebugAntilog())
     }
 }

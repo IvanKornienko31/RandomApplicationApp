@@ -12,6 +12,20 @@ import com.github.ivankornienko31.randomapplication.ui.screens.GreetingScreen
 import com.github.ivankornienko31.randomapplication.ui.screens.LoginScreen
 import com.github.ivankornienko31.randomapplication.ui.themes.RandomAppTheme
 
+/**
+ * Функция [Router] отображает содержимое приложение с кастомной темой.
+ *
+ * Добавлена поддержка Jetpack Compose Navigation через [Serializable]
+ *
+ * Чтобы посмотреть объявленные Serializable, см. ./ui/routes/Routes.kt
+ *
+ * - [GreetingScreen] - Стартовый Composable, содержащий Coil-картинку
+ *
+ * - [LoginScreen] - Composable, содержащий поля ввода и кнопку
+ *
+ * @author Иван Корниенко
+ */
+
 @Composable
 @Preview
 fun Router() {

@@ -5,6 +5,10 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 
+/**
+ * TODO: в дальнейшем добавить документацию для темы приложения
+ * @author Иван Корниенко
+ */
 val DarkColorScheme = darkColorScheme(
     primary = Blue80,
     secondary = DimmedBlue80,
