@@ -13,13 +13,13 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            App()
+            Router()
         }
     }
 }
 
 @Preview
 @Composable
-fun AppAndroidPreview() {
-    App()
+fun RouterAndroidPreview() {
+    Router()
 }

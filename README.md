@@ -16,9 +16,86 @@
 **Библиотеки:**
 
 - Coil - подгрузка картинок из Интернета
-- Napier - кроссплатформенное логирование
 
-<!-- Последний коммит в репозитории Napier был сделан **3 года назад (4 января 2024 года)** -->
+  _Примечание:_ для Android реализован через клиент OkHttp
+
+- Napier - кроссплатформенное логирование
+- Ktor - кроссплатформенный HTTP-клиент (пока что **добавлен (но не реализован!)** только для iOS)
+- Kotlin Serialization - добавление аннотации `@Serializable`
+
+**Плагины:**
+
+- Kotlin Serialization - добавление аннотации `@Serializable`
+
+Далее будут приведены добавленные фрагменты в файлы `libs.versions.toml` и `build.gradle.kts` для модуля `:composeApp`
+
+- `libs.versions.toml`, содержащий только указанные библиотеки:
+
+    ```toml
+    [versions]
+    androidx-navigation = "2.9.2"
+    kotlin = "2.3.0"
+    kotlinx-serialization = "1.10.0"
+    napierVersion = "2.7.1"
+    coilVersion = "3.3.0"
+    ktorIOS = "3.4.0"
+    
+    [libraries]
+    androidx-navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "androidx-navigation" }
+    kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
+    napier = { module = "io.github.aakira:napier", version.ref = "napierVersion" }
+    coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilVersion" }
+    coil-network-android = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coilVersion" }
+    coil-network-ios = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coilVersion" }
+    ktor-ios = { module = "io.ktor:ktor-client-darwin", version.ref = "ktorIOS" }
+    
+    [plugins]
+    kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+    ```
+
+- `build.gradle.kts` для модуля `:composeApp`, импортирующий только указанные библиотеки:
+
+    ```kotlin
+    plugins {
+    //  ...
+    
+        alias(libs.plugins.kotlinx.serialization)
+    }
+    
+    kotlin {
+    //  ...
+    
+        sourceSets {
+            androidMain.dependencies {
+    //          ...
+                implementation(libs.coil.network.android)
+            }
+            commonMain.dependencies {
+    //          ...
+                implementation(libs.androidx.navigation.compose)
+                implementation(libs.kotlinx.serialization.json)
+                implementation(libs.napier)
+                implementation(libs.coil.compose)
+            }
+            commonTest.dependencies {
+    //          ...
+            }
+            iosMain.dependencies {
+                implementation(libs.ktor.ios)
+                implementation(libs.coil.network.ios)
+            }
+        }
+    }
+    
+    android {
+    //    ...
+    }
+    dependencies {
+        debugImplementation(libs.compose.uiTooling)
+    }
+    ```
+
+<!-- Последний коммит в репозитории Napier был сделан **2 года назад (4 января 2024 года)** -->
 <!-- В дальнейшем могут быть проблемы с версиями Kotlin и Napier. Хотелось бы использовать другую библиотеку (например: Kermit) -->
 
 ### Структура проекта
@@ -54,9 +131,9 @@ iOS версия приложения пока что находится в ра
 ### Тестировавшиеся устройства
 
 1. **Эмуляторы**:
-    - Google Pixel 7 (API 36, Android 16)
+     - Google Pixel 7 (API 36, Android 16)
 2. **Реальные устройства**:
-    - Xiaomi Redmi 12 (API 33, Android 13 _with MIUI 14_)
+    - Xiaomi Redmi 12 (API 33, Android 13 _with MIUI 14_). Идентификатор устройства: Xiaomi 23053RN02A
 
 
 
