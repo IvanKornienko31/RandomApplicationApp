@@ -6,5 +6,6 @@ plugins {
     alias(libs.plugins.composeMultiplatform) apply false
     alias(libs.plugins.composeCompiler) apply false
     alias(libs.plugins.riflesso) apply false
+    alias(libs.plugins.stability.analyzer) apply false
     alias(libs.plugins.kotlinMultiplatform) apply false
 }

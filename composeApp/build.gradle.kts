@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.riflesso)
     alias(libs.plugins.kotlinx.serialization)
+    alias(libs.plugins.stability.analyzer)
 }
 
 kotlin {
@@ -47,6 +48,7 @@ kotlin {
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.napier)
             implementation(libs.coil.compose)
+            implementation(libs.material.icons.core)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

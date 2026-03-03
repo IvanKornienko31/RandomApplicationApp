@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="greeting_screen_greeting">Hello!</string>
+    <string name="greeting_screen_picture_description">Falling Star</string>
+    <string name="greeting_screen_nice">Nice to meet you again =)</string>
+    <string name="greeting_screen_dream">Click the button to sign in to your account and daydream</string>
+    <string name="greeting_button_action">Login</string>
+</resources>
