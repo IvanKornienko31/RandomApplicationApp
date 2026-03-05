@@ -11,20 +11,18 @@ import androidx.compose.runtime.Composable
  */
 
 val DarkColorScheme = darkColorScheme(
-    primary = Orange40,
-    secondary = DimmedOrange40,
-    tertiary = LightOrange40
+    primary = primaryColor,
+    onPrimary = onPrimaryColor,
 )
 
 val LightColorScheme = lightColorScheme(
-    primary = Orange40,
-    secondary = DimmedOrange80,
-    tertiary = LightOrange80
+    primary = primaryColor,
+    onPrimary = onPrimaryColor,
 )
 
 @Composable
 expect fun RandomAppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 )

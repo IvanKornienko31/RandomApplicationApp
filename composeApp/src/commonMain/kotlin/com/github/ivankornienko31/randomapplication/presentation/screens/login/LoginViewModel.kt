@@ -69,7 +69,7 @@ class LoginViewModel(
     }
 
     private fun checkButtonActive(email: String, password: String): Boolean {
-        return email.trim().isValidEmail() && password.length > 8
+        return email.trim().isValidEmail() && password.length >= 8
     }
 
     fun onLoginClicked() {
