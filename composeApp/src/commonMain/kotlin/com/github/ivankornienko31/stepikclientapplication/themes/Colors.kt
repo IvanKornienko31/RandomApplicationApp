@@ -9,3 +9,5 @@ import androidx.compose.ui.graphics.Color
 
 val primaryColor = Color(0xFFFF4500)
 val onPrimaryColor = Color(0xFFFFFFFF)
+
+val randomColor = Color(0xFFF5F5F5)

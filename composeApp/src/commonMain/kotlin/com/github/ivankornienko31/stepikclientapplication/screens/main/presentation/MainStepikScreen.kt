@@ -43,10 +43,12 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.github.ivankornienko31.stepikclientapplication.screens.main.domain.RedditPostModel
 import com.github.ivankornienko31.stepikclientapplication.themes.CustomTextStyles
+import com.github.ivankornienko31.stepikclientapplication.themes.randomColor
 
 /**
  * Экран успешной авторизации.
  */
+
 @Composable
 fun MainScreen(
     viewModel: MainViewModel = viewModel()
@@ -66,7 +68,7 @@ fun MainScreen(
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     items(
-                        items = posts!!,
+                        items = posts.orEmpty(),
                         key = { post -> post.id }
                     ) { post ->
                         RedditPostItem(post)
@@ -88,83 +90,96 @@ fun RedditPostItem(post: RedditPostModel) {
         Column(
             modifier = Modifier.padding(12.dp)
         ) {
-            // 1. Header: Subreddit + User + Time
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Box(
-                    modifier = Modifier
-                        .size(24.dp)
-                        .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.primary)
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = "${post.subreddit} • u/${post.author} • ${post.hoursAgo}h",
-                    style = MaterialTheme.typography.labelMedium,
-                    color = Color.Gray
-                )
-            }
-
+            RedditPostHeader(post)
             Spacer(modifier = Modifier.height(8.dp))
 
-            // 2. Title
-            Text(
-                text = post.title,
-                style = CustomTextStyles.mainTextStyle.copy(
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 18.sp,
-                    color = Color.Black
-                )
-            )
-
+            RedditPostTitle(post)
             Spacer(modifier = Modifier.height(8.dp))
 
-            // 3. Content (Text or Image placeholder)
-            if (post.contentText != null) {
-                Text(
-                    text = post.contentText,
-                    style = MaterialTheme.typography.bodyMedium,
-                    maxLines = 3,
-                    overflow = TextOverflow.Ellipsis
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-            } else {
-                // Placeholder for Image content
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(150.dp)
-                        .clip(RoundedCornerShape(8.dp))
-                        .background(Color.LightGray),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text("Image Content Placeholder", color = Color.DarkGray)
-                }
-                Spacer(modifier = Modifier.height(8.dp))
-            }
-
+            RedditPostContent(post)
             Spacer(modifier = Modifier.height(4.dp))
 
-            // 4. Footer: Actions
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start
-            ) {
-                PostAction(
-                    icon = Icons.Default.ArrowUpward,
-                    text = post.likesCount.toString()
-                )
-                Spacer(modifier = Modifier.width(16.dp))
-                PostAction(
-                    icon = Icons.Default.ChatBubbleOutline,
-                    text = post.commentsCount.toString()
-                )
-                Spacer(modifier = Modifier.width(16.dp))
-                PostAction(
-                    icon = Icons.Default.Share,
-                    text = "Share"
-                )
-            }
+            RedditPostActions(post)
         }
+    }
+}
+
+@Composable
+fun RedditPostHeader(post: RedditPostModel) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Box(
+            modifier = Modifier
+                .size(24.dp)
+                .clip(CircleShape)
+                .background(MaterialTheme.colorScheme.primary)
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            text = "${post.subreddit} • u/${post.author} • ${post.hoursAgo}h",
+            style = MaterialTheme.typography.labelMedium,
+            color = Color.Gray
+        )
+    }
+}
+
+@Composable
+fun RedditPostTitle(post: RedditPostModel) {
+    Text(
+        text = post.title,
+        style = CustomTextStyles.mainTextStyle.copy(
+            fontWeight = FontWeight.Bold,
+            fontSize = 18.sp,
+            color = Color.Black
+        )
+    )
+}
+
+@Composable
+fun RedditPostContent(post: RedditPostModel) {
+    if (post.contentText != null) {
+        Text(
+            text = post.contentText,
+            style = MaterialTheme.typography.bodyMedium,
+            maxLines = 3,
+            overflow = TextOverflow.Ellipsis
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+    } else {
+        // Placeholder for Image content
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(150.dp)
+                .clip(RoundedCornerShape(8.dp))
+                .background(Color.LightGray),
+            contentAlignment = Alignment.Center
+        ) {
+            Text("Image Content Placeholder", color = Color.DarkGray)
+        }
+        Spacer(modifier = Modifier.height(8.dp))
+    }
+}
+
+@Composable
+fun RedditPostActions(post: RedditPostModel) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Start
+    ) {
+        PostAction(
+            icon = Icons.Default.ArrowUpward,
+            text = post.likesCount.toString()
+        )
+        Spacer(modifier = Modifier.width(16.dp))
+        PostAction(
+            icon = Icons.Default.ChatBubbleOutline,
+            text = post.commentsCount.toString()
+        )
+        Spacer(modifier = Modifier.width(16.dp))
+        PostAction(
+            icon = Icons.Default.Share,
+            text = "Share"
+        )
     }
 }
 
@@ -173,7 +188,7 @@ fun PostAction(icon: ImageVector, text: String) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
-            .background(Color(0xFFF5F5F5), RoundedCornerShape(16.dp))
+            .background(randomColor, shape = RoundedCornerShape(16.dp))
             .padding(horizontal = 8.dp, vertical = 4.dp)
     ) {
         Icon(

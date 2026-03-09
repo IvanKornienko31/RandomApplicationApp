@@ -13,11 +13,13 @@ import androidx.compose.runtime.Composable
 val DarkColorScheme = darkColorScheme(
     primary = primaryColor,
     onPrimary = onPrimaryColor,
+    surface = randomColor
 )
 
 val LightColorScheme = lightColorScheme(
     primary = primaryColor,
     onPrimary = onPrimaryColor,
+    surface = randomColor
 )
 
 @Composable

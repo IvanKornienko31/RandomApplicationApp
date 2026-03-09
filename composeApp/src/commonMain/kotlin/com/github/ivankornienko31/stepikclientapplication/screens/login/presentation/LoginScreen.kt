@@ -72,7 +72,7 @@ import stepikclientapplication.composeapp.generated.resources.text_field_passwor
 @Composable
 fun LoginScreen(
     id: String,
-    viewModel: LoginViewModel = viewModel(),
+    viewModel: LoginViewModel = viewModel { LoginViewModel() },
     onNavigateToMain: () -> Unit
 ) {
     val uiState by viewModel.state.collectAsStateWithLifecycle()
@@ -409,7 +409,6 @@ fun LoginScreenPreview() {
     StepikAppTheme {
         LoginScreen(
             id = "",
-            viewModel = LoginViewModel(),
             onNavigateToMain = { }
         )
     }
