@@ -6,7 +6,8 @@
 интересного =)
 
 Выбранная тема проекта – Stepik. Ранее был выбран Reddit, однако из-за проблем с доступом к API тема
-была заменена, но UI пока что остался без изменений.
+была заменена, но UI пока что остался без изменений (следы Reddit будут убраны в ближайших
+изменениях).
 
 ### Стек
 
@@ -132,10 +133,74 @@
 
 ### Структура проекта
 
-[//]: # (TODO: добавить структуру проекта после его создания)
+- Структура общей логики (модуль `:composeApp:commonMain`)
 
-```bash
-nothing here =(
+```
+commonMain/
+├── composeResources/
+│   ├── drawable/                                               # Статичные рисунки/иконки
+│   │   └── ...
+│   ├── values/                                                 # Дефолтный язык (англ. яз.)
+│   │   └── ...
+│   └── values-ru/                                              # Русская локализация
+│       └── ...
+└── kotlin/
+    └── com.github.ivankornienko31.stepikclientapplication/
+        ├── routing/                                            # Настройка маршрутизации
+        │   ├── Router.kt                                       # Главный Composable в приложении
+        │   └── ScreenRoutes.kt                                 # Все маршруты к экранам
+        ├── screens/                                            # Экраны
+        │   ├── greeting/                                       # Экран приветствия
+        │   │   └── presentation/                               # Здесь только один слой, так как в нём не реализовывался viewModel и репозитории
+        │   │       └── ...
+        │   ├── login/                                          # Экран авторизации
+        │   │   ├── data/
+        │   │   │   └── ...
+        │   │   ├── domain/
+        │   │   │   └── ...
+        │   │   └── presentation/
+        │   │       └── ...
+        │   ├── main/                                           # Главный экран
+        │   │   ├── data/
+        │   │   │   └── ...
+        │   │   ├── domain/
+        │   │   │   └── ...
+        │   │   └── presentation/
+        │   │       └── ...
+        │   └── ...                                             # Другие экраны с похожей структурой
+        └── themes/                                             # Элементы UI приложения
+            ├── AppTheme.kt                                     # Светлая/тёмная тема
+            ├── Colors.kt                                       # Цвета
+            ├── Dimens.kt                                       # Все размеры (padding, radius и пр.)
+            ├── Modifiers.kt                                    # Необходимые modifiers
+            ├── Shapes.kt                                       # Фигуры (для кнопок, картинок и пр.)
+            └── TextStyles.kt                                   # Типографика
+```
+
+- Структура логики на Android (модуль `:composeApp:androidMain`)
+
+```
+androidMain/
+├── kotlin/
+│   └── com.github.ivankornienko31.stepikclientapplication/
+│       ├── themes/
+│       │   └── AppTheme.android.kt                             # Светлая/тёмная тема для Andoird
+│       ├── MainActivity.kt                                     # Единственная Activity для Andoird
+│       └── MainApp.kt                                          # Application с инициализацией нужных библиотек
+├── res/                                                        # Ресурсы для Andoird (локализация, иконки)
+│   └── ...
+└── AndroidManifest.xml
+```
+
+- Структура логики на iOS (модуль `:composeApp:iosMain`)
+
+```
+iosMain/
+└── kotlin/
+    └── com.github.ivankornienko31.stepikclientapplication/
+        ├── themes/
+        │   └── AppTheme.ios.kt
+        └── MainViewController.kt
 ```
 
 ### Подробности реализации
