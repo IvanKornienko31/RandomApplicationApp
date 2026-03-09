@@ -6,7 +6,9 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.riflesso)
     alias(libs.plugins.kotlinx.serialization)
+    alias(libs.plugins.stability.analyzer)
 }
 
 kotlin {
@@ -31,6 +33,7 @@ kotlin {
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.androidx.activity.compose)
             implementation(libs.coil.network.android)
+            implementation(libs.riflesso)
         }
         commonMain.dependencies {
             implementation(libs.compose.runtime)
@@ -45,6 +48,7 @@ kotlin {
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.napier)
             implementation(libs.coil.compose)
+            implementation(libs.material.icons.core)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -55,7 +59,6 @@ kotlin {
         }
     }
 }
-
 android {
     namespace = "com.github.ivankornienko31.randomapplication"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
@@ -82,6 +85,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
 }
+
 
 dependencies {
     debugImplementation(libs.compose.uiTooling)

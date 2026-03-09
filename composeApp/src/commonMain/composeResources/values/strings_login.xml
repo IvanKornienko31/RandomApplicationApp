@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="login_screen_greeting">Login</string>
+    <string name="login_screen_hint">Please enter your login details</string>
+    <string name="input_field_is_empty">This field cannot be empty!</string>
+    <string name="input_field_incorrect_email_format">Please provide a valid email address</string>
+    <string name="text_field_email_label" translatable="false">Email</string>
+    <string name="text_field_email_placeholder">Enter email</string>
+    <string name="text_field_password_label">Password</string>
+    <string name="text_field_password_placeholder">Enter password</string>
+    <string name="input_field_incorrect_password_length">The password must be longer than 8 characters</string>
+    <string name="login_button_action">Login</string>
+</resources>

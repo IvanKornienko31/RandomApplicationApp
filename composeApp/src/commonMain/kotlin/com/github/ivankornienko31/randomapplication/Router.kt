@@ -5,12 +5,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navDeepLink
 import androidx.navigation.toRoute
-import com.github.ivankornienko31.randomapplication.ui.routes.LoginScreenRoute
-import com.github.ivankornienko31.randomapplication.ui.routes.MainScreenRoute
-import com.github.ivankornienko31.randomapplication.ui.screens.GreetingScreen
-import com.github.ivankornienko31.randomapplication.ui.screens.LoginScreen
-import com.github.ivankornienko31.randomapplication.ui.themes.RandomAppTheme
+import com.github.ivankornienko31.randomapplication.presentation.routes.LoginScreenRoute
+import com.github.ivankornienko31.randomapplication.presentation.routes.GreetingScreenRoute
+import com.github.ivankornienko31.randomapplication.presentation.routes.MainScreenRoute
+import com.github.ivankornienko31.randomapplication.presentation.screens.greeting.GreetingScreen
+import com.github.ivankornienko31.randomapplication.presentation.screens.login.LoginScreen
+import com.github.ivankornienko31.randomapplication.presentation.screens.main.MainScreen
+import com.github.ivankornienko31.randomapplication.presentation.themes.RandomAppTheme
+import com.skydoves.compose.stability.runtime.TraceRecomposition
 
 /**
  * Функция [Router] отображает содержимое приложение с кастомной темой.
@@ -19,13 +23,14 @@ import com.github.ivankornienko31.randomapplication.ui.themes.RandomAppTheme
  *
  * Чтобы посмотреть объявленные Serializable, см. ./ui/routes/Routes.kt
  *
- * - [GreetingScreen] - Стартовый Composable, содержащий Coil-картинку
+ * - [com.github.ivankornienko31.randomapplication.presentation.screens.greeting.GreetingScreen] - Стартовый Composable, содержащий Coil-картинку
  *
- * - [LoginScreen] - Composable, содержащий поля ввода и кнопку
+ * - [com.github.ivankornienko31.randomapplication.presentation.screens.login.LoginScreen] - Composable, содержащий поля ввода и кнопку
  *
  * @author Иван Корниенко
  */
 
+@TraceRecomposition
 @Composable
 @Preview
 fun Router() {
@@ -33,19 +38,42 @@ fun Router() {
         val navController = rememberNavController()
         NavHost(
             navController = navController,
-            startDestination = MainScreenRoute
+            startDestination = GreetingScreenRoute
         ) {
-            composable<MainScreenRoute> {
+            composable<GreetingScreenRoute> {
                 GreetingScreen {
-                    navController.navigate(LoginScreenRoute("login"))
+                    navController.navigate(
+                        LoginScreenRoute(
+                            "login"
+                        )
+                    )
                 }
             }
-            composable<LoginScreenRoute> { backStackEntry ->
-                val args = backStackEntry.toRoute<LoginScreenRoute>()
+            composable<LoginScreenRoute>(
+                deepLinks = listOf(
+                    navDeepLink<LoginScreenRoute>(
+                        basePath = "testapp://login-reddit"
+                    )
+                )
+            ) { backStackEntry ->
+                val args =
+                    backStackEntry.toRoute<LoginScreenRoute>()
 
                 val id = args.id
 
-                LoginScreen(id = id)
+                LoginScreen(
+                    id = id,
+                    onNavigateToMain = {
+                        navController.navigate(MainScreenRoute) {
+                            popUpTo<GreetingScreenRoute> {
+                                inclusive = true
+                            }
+                        }
+                    }
+                )
+            }
+            composable<MainScreenRoute> {
+                MainScreen()
             }
         }
     }

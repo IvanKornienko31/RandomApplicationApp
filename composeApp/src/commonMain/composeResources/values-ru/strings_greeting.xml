@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="greeting_screen_picture_description">Падающая звезда</string>
+    <string name="greeting_screen_greeting">Привет!</string>
+    <string name="greeting_screen_nice">Рад видеть тебя снова =)</string>
+    <string name="greeting_screen_dream">Нажми на кнопку, чтобы войти в свой аккаунт и помечтать</string>
+    <string name="greeting_button_action">Войти</string>
+</resources>

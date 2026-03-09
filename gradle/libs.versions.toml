@@ -10,14 +10,17 @@ androidx-espresso = "3.7.0"
 androidx-lifecycle = "2.9.6"
 androidx-testExt = "1.3.0"
 androidx-navigation = "2.9.2"
+materialIconsCore = "1.7.3"
 composeMultiplatform = "1.10.1"
 junit = "4.13.2"
-kotlin = "2.3.0"
+kotlin = "2.2.21"
 kotlinx-serialization = "1.10.0"
 material3 = "1.10.0-alpha05"
 napierVersion = "2.7.1"
 coilVersion = "3.3.0"
 ktorIOS = "3.4.0"
+riflesso = "2.2.21-0.0.3"
+stabitityAnalyzer = "0.6.4"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -29,6 +32,7 @@ androidx-espresso-core = { module = "androidx.test.espresso:espresso-core", vers
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
 androidx-navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "androidx-navigation" }      # Compose Navigation for KMP
+material-icons-core = { module = "org.jetbrains.compose.material:material-icons-extended", version.ref = "materialIconsCore" }
 compose-uiTooling = { module = "org.jetbrains.compose.ui:ui-tooling", version.ref = "composeMultiplatform" }
 androidx-lifecycle-viewmodelCompose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-runtimeCompose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
@@ -44,6 +48,7 @@ coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilVe
 coil-network-android = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coilVersion" }                                     # Coil Network for Android (okhttp client)
 coil-network-ios = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coilVersion" }                                          # Coil Network for iOS (ktor client)
 ktor-ios = { module = "io.ktor:ktor-client-darwin", version.ref = "ktorIOS" }                                                               # Ktor library
+riflesso = { module = "ru.ivk1800.riflesso:client", version.ref = "riflesso" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -52,3 +57,5 @@ composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "composeMul
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }                                        # Serialization plugin
+stability-analyzer = { id = "com.github.skydoves.compose.stability.analyzer", version.ref = "stabitityAnalyzer" }
+riflesso = { id = "ru.ivk1800.riflesso", version.ref = "riflesso" }
