@@ -1,4 +1,4 @@
-rootProject.name = "RandomApplication"
+rootProject.name = "StepikClientApplication"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {

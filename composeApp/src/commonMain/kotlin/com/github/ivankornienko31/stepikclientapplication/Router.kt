@@ -1,0 +1,80 @@
+package com.github.ivankornienko31.stepikclientapplication
+
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navDeepLink
+import androidx.navigation.toRoute
+import com.github.ivankornienko31.stepikclientapplication.presentation.routes.LoginScreenRoute
+import com.github.ivankornienko31.stepikclientapplication.presentation.routes.GreetingScreenRoute
+import com.github.ivankornienko31.stepikclientapplication.presentation.routes.MainScreenRoute
+import com.github.ivankornienko31.stepikclientapplication.presentation.screens.greeting.GreetingScreen
+import com.github.ivankornienko31.stepikclientapplication.presentation.screens.login.LoginScreen
+import com.github.ivankornienko31.stepikclientapplication.presentation.screens.main.MainScreen
+import com.github.ivankornienko31.stepikclientapplication.presentation.themes.RandomAppTheme
+import com.skydoves.compose.stability.runtime.TraceRecomposition
+
+/**
+ * Функция [Router] отображает содержимое приложение с кастомной темой.
+ *
+ * Добавлена поддержка Jetpack Compose Navigation через [Serializable]
+ *
+ * Чтобы посмотреть объявленные Serializable, см. ./ui/routes/Routes.kt
+ *
+ * - [com.github.ivankornienko31.stepikclientapplication.presentation.screens.greeting.GreetingScreen] - Стартовый Composable, содержащий Coil-картинку
+ *
+ * - [com.github.ivankornienko31.stepikclientapplication.presentation.screens.login.LoginScreen] - Composable, содержащий поля ввода и кнопку
+ *
+ * @author Иван Корниенко
+ */
+
+@TraceRecomposition
+@Composable
+@Preview
+fun Router() {
+    RandomAppTheme {
+        val navController = rememberNavController()
+        NavHost(
+            navController = navController,
+            startDestination = GreetingScreenRoute
+        ) {
+            composable<GreetingScreenRoute> {
+                GreetingScreen {
+                    navController.navigate(
+                        LoginScreenRoute(
+                            "login"
+                        )
+                    )
+                }
+            }
+            composable<LoginScreenRoute>(
+                deepLinks = listOf(
+                    navDeepLink<LoginScreenRoute>(
+                        basePath = "testapp://login-reddit"
+                    )
+                )
+            ) { backStackEntry ->
+                val args =
+                    backStackEntry.toRoute<LoginScreenRoute>()
+
+                val id = args.id
+
+                LoginScreen(
+                    id = id,
+                    onNavigateToMain = {
+                        navController.navigate(MainScreenRoute) {
+                            popUpTo<GreetingScreenRoute> {
+                                inclusive = true
+                            }
+                        }
+                    }
+                )
+            }
+            composable<MainScreenRoute> {
+                MainScreen()
+            }
+        }
+    }
+}

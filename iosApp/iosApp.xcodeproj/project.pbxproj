@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		5EFE9BE18D62A387E2969561 /* RandomApplication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RandomApplication.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5EFE9BE18D62A387E2969561 /* StepikClientApplication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StepikClientApplication.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -59,7 +59,7 @@
 		E45D1ECE35A93B74237C829F /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5EFE9BE18D62A387E2969561 /* RandomApplication.app */,
+				5EFE9BE18D62A387E2969561 /* StepikClientApplication.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -87,7 +87,7 @@
 			packageProductDependencies = (
 			);
 			productName = iosApp;
-			productReference = 5EFE9BE18D62A387E2969561 /* RandomApplication.app */;
+			productReference = 5EFE9BE18D62A387E2969561 /* StepikClientApplication.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */

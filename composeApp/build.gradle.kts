@@ -60,11 +60,11 @@ kotlin {
     }
 }
 android {
-    namespace = "com.github.ivankornienko31.randomapplication"
+    namespace = "com.github.ivankornienko31.stepikclientapplication"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "com.github.ivankornienko31.randomapplication"
+        applicationId = "com.github.ivankornienko31.stepikclientapplication"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1

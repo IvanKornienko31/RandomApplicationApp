@@ -1,4 +1,4 @@
-# RandomApplication
+# Stepik Client App
 
 ## О приложении
 
