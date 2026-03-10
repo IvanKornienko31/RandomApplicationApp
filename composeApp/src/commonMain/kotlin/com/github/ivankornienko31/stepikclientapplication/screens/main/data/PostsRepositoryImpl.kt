@@ -61,21 +61,20 @@ class StepikCoursesRepositoryImpl : StepikCoursesRepository {
     private val client = StepikHttpClient.client
     private val baseUrl = "https://stepik.org/api"
 
-    override suspend fun getCourses(page: Int): List<RemoteStepikCourseModel> {
-        return try {
+    override suspend fun getCourses(page: Int): Result<List<RemoteStepikCourseModel>> {
+        return runCatching {
             val response: StepikCoursesResponse = client.get("$baseUrl/courses") {
                 parameter("page", page)
             }.body()
 
             response.courses
-        } catch (e: Exception) {
+        }.onFailure { e ->
             Napier.e("Ошибка при загрузке курсов", e, tag = "StepikRepo")
-            emptyList()
         }
     }
 
-    override suspend fun searchCourses(query: String, page: Int): List<RemoteStepikCourseModel> {
-        return try {
+    override suspend fun searchCourses(query: String, page: Int): Result<List<RemoteStepikCourseModel>> {
+        return runCatching {
             val searchResponse: StepikSearchResponse = client.get("$baseUrl/search-results") {
                 parameter("is_popular", true)
                 parameter("is_public", true)
@@ -87,7 +86,7 @@ class StepikCoursesRepositoryImpl : StepikCoursesRepository {
             val courseIds = searchResponse.searchResults.map { it.courseId }
 
             if (courseIds.isEmpty()) {
-                return emptyList()
+                return@runCatching emptyList()
             }
 
             val coursesResponse: StepikCoursesResponse = client.get("$baseUrl/courses") {
@@ -98,10 +97,8 @@ class StepikCoursesRepositoryImpl : StepikCoursesRepository {
 
             val coursesMap = coursesResponse.courses.associateBy { it.id }
             courseIds.mapNotNull { id -> coursesMap[id] }
-
-        } catch (e: Exception) {
+        }.onFailure { e ->
             Napier.e("Ошибка при поиске курсов", e, tag = "StepikRepo")
-            emptyList()
         }
     }
 }

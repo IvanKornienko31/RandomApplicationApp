@@ -14,9 +14,3 @@ class PostsUseCase(private val repository: PostsRepository) {
         return repository.getPosts().sortedBy { it.hoursAgo }
     }
 }
-
-class CoursesUseCase(private val repository: StepikCoursesRepository) {
-    suspend operator fun invoke(): List<RemoteStepikCourseModel> {
-        return repository.getCourses()
-    }
-}

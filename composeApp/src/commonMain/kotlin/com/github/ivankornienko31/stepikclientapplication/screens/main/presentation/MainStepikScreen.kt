@@ -21,6 +21,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.material.icons.filled.ChatBubbleOutline
 import androidx.compose.material.icons.filled.Share
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -36,6 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -43,31 +45,104 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import com.github.ivankornienko31.stepikclientapplication.screens.main.data.remote.RedditPostModel
+import com.github.ivankornienko31.stepikclientapplication.screens.main.data.remote.RemoteStepikCourseModel
 import com.github.ivankornienko31.stepikclientapplication.themes.CustomModifiers
 import com.github.ivankornienko31.stepikclientapplication.themes.CustomTextStyles
 import com.github.ivankornienko31.stepikclientapplication.themes.randomColor
 
-/**
- * Экран успешной авторизации.
- */
-
 @Composable
 fun MainStepikScreen(
-    viewModel: MainViewModel = viewModel { MainViewModel() }
+    viewModel: StepikMainViewModel = viewModel { StepikMainViewModel() }
 ) {
-    Scaffold(
-        modifier = CustomModifiers.scaffoldModifier
-    ) { innerPadding ->
+    val state by viewModel.uiState.collectAsState()
+
+    Scaffold { paddingValues ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding),
+                .padding(paddingValues),
             contentAlignment = Alignment.Center
         ) {
-            Text("Will be added soon =)")
+            // Отрисовываем UI в зависимости от текущего состояния
+            when (val currentState = state) {
+                is CoursesUiState.Loading -> {
+                    CircularProgressIndicator()
+                }
+
+                is CoursesUiState.Error -> {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(text = "Ошибка: ${currentState.message}", color = MaterialTheme.colorScheme.error)
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Button(onClick = { viewModel.loadCourses() }) {
+                            Text("Повторить")
+                        }
+                    }
+                }
+
+                is CoursesUiState.Success -> {
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize(),
+                        contentPadding = PaddingValues(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        items(currentState.courses) { course ->
+                            CourseItem(course = course)
+                        }
+                    }
+                }
+            }
         }
     }
 }
+@Composable
+fun CourseItem(course: RemoteStepikCourseModel) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // Обложка курса (Coil)
+            AsyncImage(
+                model = course.coursePicture,
+                contentDescription = course.title,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.size(80.dp)
+            )
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            // Текстовая информация
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = course.title,
+                    style = MaterialTheme.typography.titleMedium,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = course.summary,
+                    style = MaterialTheme.typography.bodySmall,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = if (course.price == "-") "Бесплатно" else course.price,
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
+        }
+    }
+}
+
 
 @Deprecated(
     message = "WARNING! This function will be replaced by Stepik analogue at the next update",

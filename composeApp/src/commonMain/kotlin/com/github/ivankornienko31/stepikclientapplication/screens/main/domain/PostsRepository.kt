@@ -14,7 +14,7 @@ interface PostsRepository {
 }
 
 interface StepikCoursesRepository {
-    suspend fun getCourses(page: Int = 1): List<RemoteStepikCourseModel>
+    suspend fun getCourses(page: Int = 1): Result<List<RemoteStepikCourseModel>>
 
-    suspend fun searchCourses(query: String, page: Int = 1): List<RemoteStepikCourseModel>
+    suspend fun searchCourses(query: String, page: Int = 1): Result<List<RemoteStepikCourseModel>>
 }
