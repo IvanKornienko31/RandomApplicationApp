@@ -72,8 +72,8 @@ import stepikclientapplication.composeapp.generated.resources.text_field_passwor
 @Composable
 fun LoginScreen(
     id: String,
-    viewModel: LoginViewModel = viewModel { LoginViewModel() },
-    onNavigateToMain: () -> Unit
+    onNavigateToMain: () -> Unit,
+    viewModel: LoginViewModel = viewModel { LoginViewModel() }
 ) {
     val uiState by viewModel.state.collectAsStateWithLifecycle()
 

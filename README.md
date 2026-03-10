@@ -162,11 +162,14 @@ commonMain/
         │   │       └── ...
         │   ├── main/                                           # Главный экран
         │   │   ├── data/
-        │   │   │   └── ...
+        │   │   │   └── StepikCoursesRepositoryImpl.kt
         │   │   ├── domain/
-        │   │   │   └── ...
+        │   │   │   ├── StepikCoursesRepository.kt
+        │   │   │   ├── CoursesUseCase.kt
+        │   │   │   └── RemoteStepikCourseModel
         │   │   └── presentation/
-        │   │       └── ...
+        │   │       ├── MainStepikScreen.kt
+        │   │       └── StepikMainViewModel.kt
         │   └── ...                                             # Другие экраны с похожей структурой
         └── themes/                                             # Элементы UI приложения
             ├── AppTheme.kt                                     # Светлая/тёмная тема

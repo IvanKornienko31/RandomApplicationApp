@@ -41,7 +41,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.github.ivankornienko31.stepikclientapplication.screens.main.domain.RedditPostModel
+import coil3.compose.AsyncImage
+import com.github.ivankornienko31.stepikclientapplication.screens.main.data.remote.RedditPostModel
+import com.github.ivankornienko31.stepikclientapplication.themes.CustomModifiers
 import com.github.ivankornienko31.stepikclientapplication.themes.CustomTextStyles
 import com.github.ivankornienko31.stepikclientapplication.themes.randomColor
 
@@ -49,6 +51,30 @@ import com.github.ivankornienko31.stepikclientapplication.themes.randomColor
  * Экран успешной авторизации.
  */
 
+@Composable
+fun MainStepikScreen(
+    viewModel: MainViewModel = viewModel { MainViewModel() }
+) {
+    Scaffold(
+        modifier = CustomModifiers.scaffoldModifier
+    ) { innerPadding ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding),
+            contentAlignment = Alignment.Center
+        ) {
+            Text("Will be added soon =)")
+        }
+    }
+}
+
+@Deprecated(
+    message = "WARNING! This function will be replaced by Stepik analogue at the next update",
+    replaceWith = ReplaceWith(
+        expression = "MainStepikScreen()"
+    )
+)
 @Composable
 fun MainScreen(
     viewModel: MainViewModel = viewModel()
@@ -73,12 +99,22 @@ fun MainScreen(
                     ) { post ->
                         RedditPostItem(post)
                     }
+
+                    item {
+                        AsyncImage(
+                            model = "https://cdn.stepik.net/media/cache/images/courses/275883/cover_VOPaIJE/69dfa941ef101e6d5e4b70d2aa37fb8d.jpg",
+                            contentDescription = null
+                        )
+                    }
                 }
             }
         }
     }
 }
 
+@Deprecated(
+    message = "WARNING! This function will be removed at the next update",
+)
 @Composable
 fun RedditPostItem(post: RedditPostModel) {
     Card(
@@ -104,6 +140,9 @@ fun RedditPostItem(post: RedditPostModel) {
     }
 }
 
+@Deprecated(
+    message = "WARNING! This function will be removed at the next update",
+)
 @Composable
 fun RedditPostHeader(post: RedditPostModel) {
     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -122,6 +161,9 @@ fun RedditPostHeader(post: RedditPostModel) {
     }
 }
 
+@Deprecated(
+    message = "WARNING! This function will be removed at the next update",
+)
 @Composable
 fun RedditPostTitle(post: RedditPostModel) {
     Text(
@@ -134,6 +176,9 @@ fun RedditPostTitle(post: RedditPostModel) {
     )
 }
 
+@Deprecated(
+    message = "WARNING! This function will be removed at the next update",
+)
 @Composable
 fun RedditPostContent(post: RedditPostModel) {
     if (post.contentText != null) {
@@ -160,6 +205,9 @@ fun RedditPostContent(post: RedditPostModel) {
     }
 }
 
+@Deprecated(
+    message = "WARNING! This function will be removed at the next update",
+)
 @Composable
 fun RedditPostActions(post: RedditPostModel) {
     Row(
@@ -183,6 +231,9 @@ fun RedditPostActions(post: RedditPostModel) {
     }
 }
 
+@Deprecated(
+    message = "WARNING! This function will be removed at the next update",
+)
 @Composable
 fun PostAction(icon: ImageVector, text: String) {
     Row(

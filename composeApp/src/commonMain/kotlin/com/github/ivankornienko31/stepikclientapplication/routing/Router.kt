@@ -5,7 +5,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navDeepLink
 import androidx.navigation.toRoute
 import com.github.ivankornienko31.stepikclientapplication.screens.greeting.presentation.GreetingScreen
 import com.github.ivankornienko31.stepikclientapplication.screens.login.presentation.LoginScreen
@@ -46,13 +45,7 @@ fun Router() {
                     )
                 }
             }
-            composable<LoginScreenRoute>(
-                deepLinks = listOf(
-                    navDeepLink<LoginScreenRoute>(
-                        basePath = "testapp://login-reddit"
-                    )
-                )
-            ) { backStackEntry ->
+            composable<LoginScreenRoute> { backStackEntry ->
                 val args =
                     backStackEntry.toRoute<LoginScreenRoute>()
 
