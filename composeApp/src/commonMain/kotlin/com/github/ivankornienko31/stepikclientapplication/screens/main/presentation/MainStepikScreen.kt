@@ -20,6 +20,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.material.icons.filled.ChatBubbleOutline
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Button
@@ -51,10 +52,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import com.github.ivankornienko31.stepikclientapplication.screens.main.data.remote.RedditPostModel
 import com.github.ivankornienko31.stepikclientapplication.screens.main.data.remote.RemoteStepikCourseModel
-import com.github.ivankornienko31.stepikclientapplication.themes.CustomModifiers
 import com.github.ivankornienko31.stepikclientapplication.themes.CustomTextStyles
 import com.github.ivankornienko31.stepikclientapplication.themes.randomColor
-import io.ktor.util.collections.getValue
 
 @Composable
 fun MainStepikScreen(
@@ -86,7 +85,6 @@ fun MainStepikScreen(
                     .fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                // Отрисовываем UI в зависимости от текущего состояния
                 when (val currentState = state) {
                     is CoursesUiState.Loading -> {
                         CircularProgressIndicator()
@@ -102,6 +100,26 @@ fun MainStepikScreen(
                             Button(onClick = { viewModel.retry() }) {
                                 Text("Повторить")
                             }
+                        }
+                    }
+
+                    is CoursesUiState.Empty -> {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Info,
+                                contentDescription = "Пусто",
+                                modifier = Modifier.size(72.dp),
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Text(
+                                text = "По вашему запросу ничего не найдено",
+                                style = MaterialTheme.typography.titleMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
                         }
                     }
 

@@ -10,11 +10,14 @@ import com.github.ivankornienko31.stepikclientapplication.screens.main.data.remo
 import com.github.ivankornienko31.stepikclientapplication.screens.main.domain.StepikCoursesRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.update
@@ -54,6 +57,7 @@ sealed interface CoursesUiState {
     ) : CoursesUiState
 
     data class Error(val message: String) : CoursesUiState
+    data object Empty : CoursesUiState
 }
 
 @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
@@ -66,52 +70,64 @@ class StepikMainViewModel : ViewModel() {
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
 
+    private val triggerSearch = MutableSharedFlow<String>(
+        replay = 1,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST
+    )
+
     private var currentPage = 1
     private var isLastPage = false
 
     init {
+        triggerSearch.tryEmit("")
+
         viewModelScope.launch {
             _searchQuery
+                .drop(1)
                 .debounce(250L)
                 .distinctUntilChanged()
-                .flatMapLatest { query ->
-                    flow {
-                        emit(CoursesUiState.Loading)
+                .collect { triggerSearch.tryEmit(it) }
+        }
 
-                        currentPage = 1
-                        isLastPage = false
+        viewModelScope.launch {
+            triggerSearch.flatMapLatest { query ->
+                flow {
+                    emit(CoursesUiState.Loading)
 
-                        val result = if (query.isBlank()) {
-                            repository.getCourses(page = currentPage)
-                        } else {
-                            repository.searchCourses(query = query)
-                        }
+                    currentPage = 1
+                    isLastPage = false
 
-                        // Обрабатываем Result с помощью функции fold
-                        val nextState = result.fold(
-                            onSuccess = { paginatedData ->
-                                currentPage = paginatedData.nextPage
-                                isLastPage = !paginatedData.hasNext
-
-                                if (paginatedData.courses.isEmpty()) CoursesUiState.Error("По запросу '$query' ничего не найдено")
-                                else CoursesUiState.Success(
-                                    courses = paginatedData.courses,
-                                    isPaginating = false,
-                                    endReached = isLastPage
-                                )
-                            },
-                            onFailure = { exception ->
-                                CoursesUiState.Error(
-                                    message = exception.message ?: "Произошла неизвестная ошибка"
-                                )
-                            }
-                        )
-
-                        emit(nextState)
+                    val result = if (query.isBlank()) {
+                        repository.getCourses(page = currentPage)
+                    } else {
+                        repository.searchCourses(query = query)
                     }
-                }.collect {
-                    _uiState.value = it
+
+                    // Обрабатываем Result с помощью функции fold
+                    val nextState = result.fold(
+                        onSuccess = { paginatedData ->
+                            currentPage = paginatedData.nextPage
+                            isLastPage = !paginatedData.hasNext
+
+                            if (paginatedData.courses.isEmpty()) CoursesUiState.Empty
+                            else CoursesUiState.Success(
+                                courses = paginatedData.courses,
+                                isPaginating = false,
+                                endReached = isLastPage
+                            )
+                        },
+                        onFailure = { exception ->
+                            CoursesUiState.Error(
+                                message = exception.message ?: "Произошла неизвестная ошибка"
+                            )
+                        }
+                    )
+
+                    emit(nextState)
                 }
+            }.collect {
+                _uiState.value = it
+            }
         }
     }
 
@@ -124,8 +140,9 @@ class StepikMainViewModel : ViewModel() {
             _uiState.value = currentState.copy(isPaginating = true)
             val query = _searchQuery.value
 
-            val result = if (query.isBlank()) repository.getCourses(page = currentPage, pagesToLoad = 1)
-            else repository.searchCourses(query = query, page = currentPage)
+            val result =
+                if (query.isBlank()) repository.getCourses(page = currentPage, pagesToLoad = 1)
+                else repository.searchCourses(query = query, page = currentPage)
 
             result.fold(
                 onSuccess = { paginatedData ->
@@ -150,8 +167,6 @@ class StepikMainViewModel : ViewModel() {
     }
 
     fun retry() {
-        val currentQuery = _searchQuery.value
-        _searchQuery.value = ""
-        _searchQuery.value = currentQuery
+        triggerSearch.tryEmit(_searchQuery.value)
     }
 }
