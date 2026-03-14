@@ -20,6 +20,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.material.icons.filled.ChatBubbleOutline
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -27,9 +28,11 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -39,9 +42,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import com.github.ivankornienko31.stepikclientapplication.screens.main.data.remote.RedditPostModel
@@ -49,44 +54,96 @@ import com.github.ivankornienko31.stepikclientapplication.screens.main.data.remo
 import com.github.ivankornienko31.stepikclientapplication.themes.CustomModifiers
 import com.github.ivankornienko31.stepikclientapplication.themes.CustomTextStyles
 import com.github.ivankornienko31.stepikclientapplication.themes.randomColor
+import io.ktor.util.collections.getValue
 
 @Composable
 fun MainStepikScreen(
     viewModel: StepikMainViewModel = viewModel { StepikMainViewModel() }
 ) {
-    val state by viewModel.uiState.collectAsState()
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
+    val searchQuery by viewModel.searchQuery.collectAsStateWithLifecycle()
 
     Scaffold { paddingValues ->
-        Box(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues),
-            contentAlignment = Alignment.Center
+                .padding(paddingValues)
         ) {
-            // Отрисовываем UI в зависимости от текущего состояния
-            when (val currentState = state) {
-                is CoursesUiState.Loading -> {
-                    CircularProgressIndicator()
-                }
+            OutlinedTextField(
+                value = searchQuery,
+                onValueChange = { viewModel.onSearchQueryChanged(it) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                placeholder = { Text("Искать курсы") },
+                leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Поиск") },
+                singleLine = true,
+                shape = MaterialTheme.shapes.extraLarge
+            )
 
-                is CoursesUiState.Error -> {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(text = "Ошибка: ${currentState.message}", color = MaterialTheme.colorScheme.error)
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Button(onClick = { viewModel.loadCourses() }) {
-                            Text("Повторить")
+            Box(
+                modifier = Modifier
+                    .fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                // Отрисовываем UI в зависимости от текущего состояния
+                when (val currentState = state) {
+                    is CoursesUiState.Loading -> {
+                        CircularProgressIndicator()
+                    }
+
+                    is CoursesUiState.Error -> {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text(
+                                text = "Ошибка: ${currentState.message}",
+                                color = MaterialTheme.colorScheme.error
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Button(onClick = { viewModel.retry() }) {
+                                Text("Повторить")
+                            }
                         }
                     }
-                }
 
-                is CoursesUiState.Success -> {
-                    LazyColumn(
-                        modifier = Modifier.fillMaxSize(),
-                        contentPadding = PaddingValues(16.dp),
-                        verticalArrangement = Arrangement.spacedBy(16.dp)
-                    ) {
-                        items(currentState.courses) { course ->
-                            CourseItem(course = course)
+                    is CoursesUiState.Success -> {
+                        LazyColumn(
+                            modifier = Modifier.fillMaxSize(),
+                            contentPadding = PaddingValues(16.dp),
+                            verticalArrangement = Arrangement.spacedBy(16.dp)
+                        ) {
+                            item {
+                                Text(
+                                    if (searchQuery == "") {
+                                        "Последние курсы"
+                                    } else {
+                                        "Найденные курсы"
+                                    },
+                                    textAlign = TextAlign.Left
+                                )
+                            }
+
+                            items(currentState.courses) { course ->
+                                CourseItem(course = course)
+                            }
+
+                            if (currentState.isPaginating) {
+                                item {
+                                    Box(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(16.dp),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        CircularProgressIndicator()
+                                    }
+                                }
+                            } else if (!currentState.endReached) {
+                                item {
+                                    LaunchedEffect(Unit) {
+                                        viewModel.loadNextPage()
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -94,6 +151,7 @@ fun MainStepikScreen(
         }
     }
 }
+
 @Composable
 fun CourseItem(course: RemoteStepikCourseModel) {
     Card(

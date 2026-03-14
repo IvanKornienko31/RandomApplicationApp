@@ -13,8 +13,14 @@ interface PostsRepository {
     suspend fun getPosts(): List<RedditPostModel>
 }
 
-interface StepikCoursesRepository {
-    suspend fun getCourses(page: Int = 1): Result<List<RemoteStepikCourseModel>>
+data class PaginatedResult(
+    val courses: List<RemoteStepikCourseModel>,
+    val hasNext: Boolean,
+    val nextPage: Int
+)
 
-    suspend fun searchCourses(query: String, page: Int = 1): Result<List<RemoteStepikCourseModel>>
+interface StepikCoursesRepository {
+    suspend fun getCourses(page: Int = 1, pagesToLoad: Int = 2): Result<PaginatedResult>
+
+    suspend fun searchCourses(query: String, page: Int = 1): Result<PaginatedResult>
 }
