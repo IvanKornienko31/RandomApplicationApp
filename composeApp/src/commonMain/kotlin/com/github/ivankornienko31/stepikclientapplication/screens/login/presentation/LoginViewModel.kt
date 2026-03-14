@@ -1,5 +1,6 @@
 package com.github.ivankornienko31.stepikclientapplication.screens.login.presentation
 
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.ivankornienko31.stepikclientapplication.screens.login.data.LoginRepositoryImpl
@@ -14,6 +15,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+@Immutable
 class LoginViewModel : ViewModel() {
     private val loginUseCase: LoginUseCase = LoginUseCase(LoginRepositoryImpl())
     private val _state = MutableStateFlow(LoginUiState())

@@ -8,9 +8,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.github.ivankornienko31.stepikclientapplication.screens.greeting.presentation.GreetingScreen
 import com.github.ivankornienko31.stepikclientapplication.screens.login.presentation.LoginScreen
-import com.github.ivankornienko31.stepikclientapplication.screens.main.presentation.MainScreen
 import com.github.ivankornienko31.stepikclientapplication.screens.main.presentation.MainStepikScreen
-import com.github.ivankornienko31.stepikclientapplication.screens.main.presentation.StepikMainViewModel
 import com.github.ivankornienko31.stepikclientapplication.themes.StepikAppTheme
 import com.skydoves.compose.stability.runtime.TraceRecomposition
 
@@ -65,7 +63,6 @@ fun Router() {
                 )
             }
             composable<MainScreenRoute> {
-//                MainScreen()
                 MainStepikScreen()
             }
         }

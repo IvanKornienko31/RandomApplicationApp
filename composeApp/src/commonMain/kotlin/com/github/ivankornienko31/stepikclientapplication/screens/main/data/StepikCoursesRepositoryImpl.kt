@@ -1,8 +1,5 @@
 package com.github.ivankornienko31.stepikclientapplication.screens.main.data
 
-import coil3.request.Disposable
-import com.github.ivankornienko31.stepikclientapplication.screens.main.data.remote.RedditPostModel
-import com.github.ivankornienko31.stepikclientapplication.screens.main.domain.PostsRepository
 import com.github.ivankornienko31.stepikclientapplication.screens.main.data.remote.RemoteStepikCourseModel
 import com.github.ivankornienko31.stepikclientapplication.screens.main.data.remote.StepikCoursesResponse
 import com.github.ivankornienko31.stepikclientapplication.screens.main.data.remote.StepikSearchResponse
@@ -12,60 +9,10 @@ import io.github.aakira.napier.Napier
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
-import io.ktor.client.statement.HttpResponse
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
-import kotlinx.coroutines.currentCoroutineContext
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.withContext
-import kotlinx.coroutines.yield
-
-@Deprecated(
-    message = "This interface will be replaced by Stepik alternative",
-    replaceWith = ReplaceWith(
-        expression = "StepikCoursesRepositoryImpl"
-    )
-)
-class PostsRepositoryImpl : PostsRepository {
-    override suspend fun getPosts(): List<RedditPostModel> {
-        delay(1500) // Имитация сети
-
-        return listOf(
-            RedditPostModel(
-                id = "1",
-                author = "kot_v_sapogah",
-                subreddit = "r/Kotlin",
-                title = "Clean Architecture is cool",
-                contentText = null,
-                likesCount = 1240,
-                commentsCount = 85,
-                hoursAgo = 2
-            ),
-            RedditPostModel(
-                id = "2",
-                author = "android_dev",
-                subreddit = "r/androiddev",
-                title = "Jetpack Compose tips",
-                contentText = "Use key in LazyColumn",
-                likesCount = 850,
-                commentsCount = 42,
-                hoursAgo = 5
-            ),
-            RedditPostModel(
-                id = "3",
-                author = "memelord",
-                subreddit = "r/funny",
-                title = "When the build fails",
-                contentText = null,
-                likesCount = 5600,
-                commentsCount = 230,
-                hoursAgo = 1
-            )
-        )
-    }
-}
 
 class StepikCoursesRepositoryImpl : StepikCoursesRepository {
     private val client = StepikHttpClient.client

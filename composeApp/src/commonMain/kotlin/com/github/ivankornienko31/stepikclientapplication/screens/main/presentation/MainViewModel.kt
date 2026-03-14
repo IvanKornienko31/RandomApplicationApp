@@ -1,9 +1,7 @@
 package com.github.ivankornienko31.stepikclientapplication.screens.main.presentation
 
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
-import com.github.ivankornienko31.stepikclientapplication.screens.main.data.PostsRepositoryImpl
-import com.github.ivankornienko31.stepikclientapplication.screens.main.data.remote.RedditPostModel
-import com.github.ivankornienko31.stepikclientapplication.screens.main.domain.PostsUseCase
 import androidx.lifecycle.viewModelScope
 import com.github.ivankornienko31.stepikclientapplication.screens.main.data.StepikCoursesRepositoryImpl
 import com.github.ivankornienko31.stepikclientapplication.screens.main.data.remote.RemoteStepikCourseModel
@@ -20,33 +18,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-
-@Deprecated(
-    message = "This interface will be replaced by Stepik alternative",
-    replaceWith = ReplaceWith(
-        expression = "StepikMainViewModel"
-    )
-)
-class MainViewModel(
-    private val postsUseCase: PostsUseCase = PostsUseCase(PostsRepositoryImpl())
-) : ViewModel() {
-
-    private val _uiState = MutableStateFlow<List<RedditPostModel>?>(null)
-    val uiState: StateFlow<List<RedditPostModel>?> = _uiState.asStateFlow()
-
-    init {
-        loadPosts()
-    }
-
-    private fun loadPosts() {
-        viewModelScope.launch {
-            val posts = postsUseCase()
-            _uiState.update { posts }
-        }
-    }
-}
 
 sealed interface CoursesUiState {
     data object Loading : CoursesUiState
@@ -60,6 +32,7 @@ sealed interface CoursesUiState {
     data object Empty : CoursesUiState
 }
 
+@Immutable
 @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
 class StepikMainViewModel : ViewModel() {
     private val repository: StepikCoursesRepository = StepikCoursesRepositoryImpl()
@@ -84,7 +57,7 @@ class StepikMainViewModel : ViewModel() {
         viewModelScope.launch {
             _searchQuery
                 .drop(1)
-                .debounce(250L)
+                .debounce(500L)
                 .distinctUntilChanged()
                 .collect { triggerSearch.tryEmit(it) }
         }
