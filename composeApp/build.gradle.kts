@@ -54,6 +54,8 @@ kotlin {
             implementation(libs.ktor.serialization.json)
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.coil.network.ktor)
+            implementation(libs.androidx.datastore.preferences.core)
+            implementation(libs.okio)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
