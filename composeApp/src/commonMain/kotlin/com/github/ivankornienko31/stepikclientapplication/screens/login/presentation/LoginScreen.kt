@@ -29,7 +29,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.github.ivankornienko31.stepikclientapplication.screens.login.domain.isValidEmail
 import com.github.ivankornienko31.stepikclientapplication.themes.CustomDimens
 import com.github.ivankornienko31.stepikclientapplication.themes.CustomModifiers
@@ -39,11 +38,12 @@ import com.github.ivankornienko31.stepikclientapplication.themes.StepikAppTheme
 import com.skydoves.compose.stability.runtime.TraceRecomposition
 import io.github.aakira.napier.Napier
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
 import stepikclientapplication.composeapp.generated.resources.Res
-import stepikclientapplication.composeapp.generated.resources.login_button_action
 import stepikclientapplication.composeapp.generated.resources.input_field_incorrect_email_format
 import stepikclientapplication.composeapp.generated.resources.input_field_incorrect_password_length
 import stepikclientapplication.composeapp.generated.resources.input_field_is_empty
+import stepikclientapplication.composeapp.generated.resources.login_button_action
 import stepikclientapplication.composeapp.generated.resources.login_screen_greeting
 import stepikclientapplication.composeapp.generated.resources.login_screen_hint
 import stepikclientapplication.composeapp.generated.resources.text_field_email_label
@@ -73,7 +73,7 @@ import stepikclientapplication.composeapp.generated.resources.text_field_passwor
 fun LoginScreen(
     id: String,
     onNavigateToMain: () -> Unit,
-    viewModel: LoginViewModel = viewModel { LoginViewModel() }
+    viewModel: LoginViewModel = koinViewModel()
 ) {
     val uiState by viewModel.state.collectAsStateWithLifecycle()
 
