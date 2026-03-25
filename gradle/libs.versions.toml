@@ -15,12 +15,16 @@ composeMultiplatform = "1.10.1"
 junit = "4.13.2"
 kotlin = "2.2.21"
 kotlinx-serialization = "1.10.0"
+kotlinx-coroutines = "1.10.0"
 material3 = "1.10.0-alpha05"
 napierVersion = "2.7.1"
 coilVersion = "3.3.0"
-ktorIOS = "3.4.0"
+ktor-version = "3.4.0"
 riflesso = "2.2.21-0.0.3"
 stabitityAnalyzer = "0.6.4"
+datastore = "1.1.2"
+okio = "3.9.1"
+koin = "4.1.1"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -43,12 +47,23 @@ compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "composeMul
 compose-components-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "composeMultiplatform" }
 compose-uiToolingPreview = { module = "org.jetbrains.compose.ui:ui-tooling-preview", version.ref = "composeMultiplatform" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }         # Serialization lib
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 napier = { module = "io.github.aakira:napier", version.ref = "napierVersion" }                                                              # Napier
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilVersion" }                                                    # Coil Compose
-coil-network-android = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coilVersion" }                                     # Coil Network for Android (okhttp client)
-coil-network-ios = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coilVersion" }                                          # Coil Network for iOS (ktor client)
-ktor-ios = { module = "io.ktor:ktor-client-darwin", version.ref = "ktorIOS" }                                                               # Ktor library
+coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coilVersion" }                                         # Coil Network for iOS (ktor client)
+ktor-client-engine = { module = "io.ktor:ktor-client-core", version.ref = "ktor-version" }
+ktor-client-ios = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor-version" }                                                   # Ktor library
+ktor-client-android = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor-version" }
+ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor-version" }
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor-version" }
+ktor-serialization-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor-version" }
 riflesso = { module = "ru.ivk1800.riflesso:client", version.ref = "riflesso" }
+androidx-datastore-preferences-core = { module = "androidx.datastore:datastore-preferences-core", version.ref = "datastore" }
+okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
+koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
+koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin" }
+koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koin" }
+koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

@@ -1,8 +1,14 @@
 package com.github.ivankornienko31.stepikclientapplication
 
 import android.app.Application
+import com.github.ivankornienko31.stepikclientapplication.datastore.OnboardingPreferences
+import com.github.ivankornienko31.stepikclientapplication.datastore.createDataStore
+import com.github.ivankornienko31.stepikclientapplication.di.initKoin
 import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.dsl.module
 import ru.ivk1800.riflesso.Riflesso
 
 /**
@@ -23,6 +29,16 @@ import ru.ivk1800.riflesso.Riflesso
 class MainApp : Application() {
     override fun onCreate() {
         super.onCreate()
+        val platformModule = module {
+            val dataStore = createDataStore(applicationContext)
+            single { OnboardingPreferences(dataStore) }
+        }
+
+        initKoin(platformDependencies = platformModule) {
+            androidContext(this@MainApp)
+            androidLogger()
+        }
+
         // Инициализация плагина Riflesso
         Riflesso.initialize()
 
