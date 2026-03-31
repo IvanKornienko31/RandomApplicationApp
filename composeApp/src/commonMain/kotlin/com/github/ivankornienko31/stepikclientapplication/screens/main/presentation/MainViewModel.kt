@@ -3,8 +3,7 @@ package com.github.ivankornienko31.stepikclientapplication.screens.main.presenta
 import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.ivankornienko31.stepikclientapplication.screens.main.data.StepikCoursesRepositoryImpl
-import com.github.ivankornienko31.stepikclientapplication.screens.main.data.remote.RemoteStepikCourseModel
+import com.github.ivankornienko31.stepikclientapplication.screens.main.domain.StepikCourse
 import com.github.ivankornienko31.stepikclientapplication.screens.main.domain.StepikCoursesRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -23,7 +22,7 @@ import kotlinx.coroutines.launch
 sealed interface CoursesUiState {
     data object Loading : CoursesUiState
     data class Success(
-        val courses: List<RemoteStepikCourseModel>,
+        val courses: List<StepikCourse>,
         val isPaginating: Boolean = false,
         val endReached: Boolean = false
     ) : CoursesUiState
@@ -34,9 +33,7 @@ sealed interface CoursesUiState {
 
 @Immutable
 @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
-class StepikMainViewModel : ViewModel() {
-    private val repository: StepikCoursesRepository = StepikCoursesRepositoryImpl()
-
+class StepikMainViewModel(private val repository: StepikCoursesRepository) : ViewModel() {
     private val _uiState = MutableStateFlow<CoursesUiState>(CoursesUiState.Loading)
     val uiState: StateFlow<CoursesUiState> = _uiState.asStateFlow()
 

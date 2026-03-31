@@ -8,5 +8,5 @@ data class StepikCoursesResponse(
     @SerialName("meta")
     val meta: MetaResponse,
     @SerialName("courses")
-    val courses: List<RemoteStepikCourseModel>
+    val courses: List<StepikCourseDto>
 )

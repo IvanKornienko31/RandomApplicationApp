@@ -1,4 +1,6 @@
+import com.codingfeline.buildkonfig.compiler.FieldSpec
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -8,6 +10,25 @@ plugins {
     alias(libs.plugins.riflesso)
     alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.stability.analyzer)
+    alias(libs.plugins.build.konfig)
+}
+
+val localPropertiesFile: File = rootProject.file("local.properties")
+val localProperties = Properties().apply {
+    load(localPropertiesFile.inputStream())
+}
+
+buildkonfig {
+    packageName = "com.github.ivankornienko31"
+    objectName = "StepikClientApp"
+
+    val clientId = localProperties["stepik.client.id"] as String
+    val clientSecret = localProperties["stepik.client.secret"] as String
+
+    defaultConfigs {
+        buildConfigField(FieldSpec.Type.STRING,"STEPIK_CLIENT_ID", clientId)
+        buildConfigField(FieldSpec.Type.STRING,"STEPIK_CLIENT_SECRET", clientSecret)
+    }
 }
 
 kotlin {

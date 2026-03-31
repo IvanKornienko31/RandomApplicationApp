@@ -9,8 +9,8 @@ import io.ktor.client.plugins.logging.Logging
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
-object StepikHttpClient {
-    val client = HttpClient {
+fun stepikHttpClient(): HttpClient {
+    return HttpClient {
         install(ContentNegotiation) {
             json(Json {
                 ignoreUnknownKeys = true
@@ -27,7 +27,7 @@ object StepikHttpClient {
                 }
             }
 
-            level = LogLevel.INFO
+            level = LogLevel.ALL
         }
     }
 }

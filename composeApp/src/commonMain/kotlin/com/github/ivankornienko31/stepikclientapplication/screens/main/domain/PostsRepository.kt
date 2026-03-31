@@ -1,9 +1,7 @@
 package com.github.ivankornienko31.stepikclientapplication.screens.main.domain
 
-import com.github.ivankornienko31.stepikclientapplication.screens.main.data.remote.RemoteStepikCourseModel
-
 data class PaginatedResult(
-    val courses: List<RemoteStepikCourseModel>,
+    val courses: List<StepikCourse>,
     val hasNext: Boolean,
     val nextPage: Int
 )

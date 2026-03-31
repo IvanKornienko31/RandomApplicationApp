@@ -1,8 +1,9 @@
 package com.github.ivankornienko31.stepikclientapplication.screens.main.data
 
-import com.github.ivankornienko31.stepikclientapplication.screens.main.data.remote.RemoteStepikCourseModel
+import com.github.ivankornienko31.stepikclientapplication.screens.main.data.remote.StepikCourseDto
 import com.github.ivankornienko31.stepikclientapplication.screens.main.data.remote.StepikCoursesResponse
 import com.github.ivankornienko31.stepikclientapplication.screens.main.data.remote.StepikSearchResponse
+import com.github.ivankornienko31.stepikclientapplication.screens.main.data.remote.toDomain
 import com.github.ivankornienko31.stepikclientapplication.screens.main.domain.PaginatedResult
 import com.github.ivankornienko31.stepikclientapplication.screens.main.domain.StepikCoursesRepository
 import io.github.aakira.napier.Napier
@@ -15,13 +16,13 @@ import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
 
 class StepikCoursesRepositoryImpl : StepikCoursesRepository {
-    private val client = StepikHttpClient.client
+    private val client = stepikHttpClient.client
     private val baseUrl = "https://stepik.org/api"
 
     override suspend fun getCourses(page: Int, pagesToLoad: Int): Result<PaginatedResult> {
         return withContext(Dispatchers.IO) {
-            suspendRunCatching {
-                val allCourses = mutableListOf<RemoteStepikCourseModel>()
+            runCatchingCancellable {
+                val allCourses = mutableListOf<StepikCourseDto>()
                 var currentPage = page
                 var validPagesLoad = 0
                 var hasNext = false
@@ -48,9 +49,8 @@ class StepikCoursesRepositoryImpl : StepikCoursesRepository {
                     currentPage++
                 }
 
-                PaginatedResult(allCourses, hasNext, currentPage)
+                PaginatedResult(allCourses.toDomain(), hasNext, currentPage)
             }.onFailure { e ->
-                if (e is CancellationException) throw e
                 Napier.e("Ошибка при загрузке курсов", e, tag = "StepikRepo")
             }
         }
@@ -58,7 +58,7 @@ class StepikCoursesRepositoryImpl : StepikCoursesRepository {
 
     override suspend fun searchCourses(query: String, page: Int): Result<PaginatedResult> {
         return withContext(Dispatchers.IO) {
-            suspendRunCatching {
+            runCatchingCancellable {
                 val searchResponse: StepikSearchResponse = client.get("$baseUrl/search-results") {
                     parameter("is_popular", true)
                     parameter("is_public", true)
@@ -71,7 +71,7 @@ class StepikCoursesRepositoryImpl : StepikCoursesRepository {
                 val courseIds = searchResponse.searchResults.map { it.courseId }
 
                 if (courseIds.isEmpty()) {
-                    return@suspendRunCatching PaginatedResult(emptyList(), hasNext, page + 1)
+                    return@runCatchingCancellable PaginatedResult(emptyList(), hasNext, page + 1)
                 }
 
                 val coursesResponse: StepikCoursesResponse = client.get("$baseUrl/courses") {
@@ -83,7 +83,7 @@ class StepikCoursesRepositoryImpl : StepikCoursesRepository {
                 val coursesMap = coursesResponse.courses.associateBy { it.id }
                 val sortedCourses = courseIds.mapNotNull { coursesMap[it] }
 
-                PaginatedResult(sortedCourses, hasNext, page + 1)
+                PaginatedResult(sortedCourses.toDomain(), hasNext, page + 1)
             }.onFailure { e ->
                 if (e is CancellationException) throw e
                 Napier.e("Ошибка при поиске курсов", e, tag = "StepikRepo")
