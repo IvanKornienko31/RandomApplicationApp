@@ -16,7 +16,7 @@ import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
 
 class StepikCoursesRepositoryImpl : StepikCoursesRepository {
-    private val client = stepikHttpClient.client
+    private val client = stepikHttpClient()
     private val baseUrl = "https://stepik.org/api"
 
     override suspend fun getCourses(page: Int, pagesToLoad: Int): Result<PaginatedResult> {

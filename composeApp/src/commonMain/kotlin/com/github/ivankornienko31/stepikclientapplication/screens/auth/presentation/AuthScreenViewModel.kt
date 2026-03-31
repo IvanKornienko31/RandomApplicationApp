@@ -1,8 +1,8 @@
-package com.github.ivankornienko31.stepikclientapplication.auth.ui
+package com.github.ivankornienko31.stepikclientapplication.screens.auth.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.ivankornienko31.stepikclientapplication.auth.domain.usecase.AuthLoginUseCase
+import com.github.ivankornienko31.stepikclientapplication.screens.auth.domain.usecase.AuthLoginUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

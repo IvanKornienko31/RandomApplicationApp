@@ -15,6 +15,9 @@ import kotlinx.serialization.Serializable
 object GreetingScreenRoute
 
 @Serializable
+data object AuthRoute
+
+@Serializable
 data class LoginScreenRoute(val id: String)
 
 @Serializable

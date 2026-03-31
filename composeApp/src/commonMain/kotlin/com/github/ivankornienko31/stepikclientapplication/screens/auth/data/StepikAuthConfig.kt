@@ -1,4 +1,4 @@
-package com.github.ivankornienko31.stepikclientapplication.auth.data
+package com.github.ivankornienko31.stepikclientapplication.screens.auth.data
 
 import com.github.ivankornienko31.StepikClientApp
 

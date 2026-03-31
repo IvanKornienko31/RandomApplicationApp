@@ -1,11 +1,10 @@
-package com.github.ivankornienko31.stepikclientapplication.auth.data
+package com.github.ivankornienko31.stepikclientapplication.screens.auth.data
 
 import com.github.ivankornienko31.StepikClientApp
-import com.github.ivankornienko31.stepikclientapplication.auth.data.StepikAuthConfig
-import com.github.ivankornienko31.stepikclientapplication.auth.data.dto.TokenDto
-import com.github.ivankornienko31.stepikclientapplication.auth.data.dto.toDomain
-import com.github.ivankornienko31.stepikclientapplication.auth.domain.entity.Token
-import com.github.ivankornienko31.stepikclientapplication.auth.domain.repository.AuthRepository
+import com.github.ivankornienko31.stepikclientapplication.screens.auth.data.dto.TokenDto
+import com.github.ivankornienko31.stepikclientapplication.screens.auth.data.dto.toDomain
+import com.github.ivankornienko31.stepikclientapplication.screens.auth.domain.entity.Token
+import com.github.ivankornienko31.stepikclientapplication.screens.auth.domain.repository.AuthRepository
 import com.github.ivankornienko31.stepikclientapplication.screens.main.data.runCatchingCancellable
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -21,7 +20,8 @@ import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
 import kotlin.io.encoding.Base64
 
-class AuthRepositoryImpl(private val httpClient: HttpClient) : AuthRepository {
+class AuthRepositoryImpl(private val httpClient: HttpClient) :
+    AuthRepository {
     override suspend fun exchangeCodeForToken(code: String): Result<Token> {
         return withContext(Dispatchers.IO) {
             runCatchingCancellable {

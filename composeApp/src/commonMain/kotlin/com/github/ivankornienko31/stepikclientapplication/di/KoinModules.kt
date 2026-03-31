@@ -1,9 +1,9 @@
 package com.github.ivankornienko31.stepikclientapplication.di
 
-import com.github.ivankornienko31.stepikclientapplication.auth.data.AuthRepositoryImpl
-import com.github.ivankornienko31.stepikclientapplication.auth.domain.repository.AuthRepository
-import com.github.ivankornienko31.stepikclientapplication.auth.domain.usecase.AuthLoginUseCase
-import com.github.ivankornienko31.stepikclientapplication.auth.ui.AuthScreenViewModel
+import com.github.ivankornienko31.stepikclientapplication.screens.auth.data.AuthRepositoryImpl
+import com.github.ivankornienko31.stepikclientapplication.screens.auth.domain.repository.AuthRepository
+import com.github.ivankornienko31.stepikclientapplication.screens.auth.domain.usecase.AuthLoginUseCase
+import com.github.ivankornienko31.stepikclientapplication.screens.auth.presentation.AuthScreenViewModel
 import com.github.ivankornienko31.stepikclientapplication.screens.login.data.LoginRepositoryImpl
 import com.github.ivankornienko31.stepikclientapplication.screens.login.domain.LoginRepository
 import com.github.ivankornienko31.stepikclientapplication.screens.login.domain.LoginUseCase

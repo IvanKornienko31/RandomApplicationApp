@@ -1,4 +1,4 @@
-package com.github.ivankornienko31.stepikclientapplication.auth.ui
+package com.github.ivankornienko31.stepikclientapplication.screens.auth.presentation
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,8 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.github.ivankornienko31.stepikclientapplication.auth.StepikAuthWebView
-import com.github.ivankornienko31.stepikclientapplication.auth.data.StepikAuthConfig
+import com.github.ivankornienko31.stepikclientapplication.screens.auth.data.StepikAuthConfig
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable

@@ -1,4 +1,4 @@
-package com.github.ivankornienko31.stepikclientapplication.auth
+package com.github.ivankornienko31.stepikclientapplication.screens.auth.presentation
 
 import android.annotation.SuppressLint
 import android.webkit.WebResourceRequest

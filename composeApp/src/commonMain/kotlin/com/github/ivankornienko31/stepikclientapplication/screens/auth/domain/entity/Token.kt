@@ -1,4 +1,4 @@
-package com.github.ivankornienko31.stepikclientapplication.auth.domain.entity
+package com.github.ivankornienko31.stepikclientapplication.screens.auth.domain.entity
 
 data class Token(
     val accessToken: String,

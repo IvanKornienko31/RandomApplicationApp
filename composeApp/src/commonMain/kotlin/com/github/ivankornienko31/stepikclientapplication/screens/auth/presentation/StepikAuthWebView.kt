@@ -1,4 +1,4 @@
-package com.github.ivankornienko31.stepikclientapplication.auth
+package com.github.ivankornienko31.stepikclientapplication.screens.auth.presentation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier

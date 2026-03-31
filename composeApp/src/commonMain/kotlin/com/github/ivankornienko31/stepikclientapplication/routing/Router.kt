@@ -14,10 +14,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.toRoute
-import com.github.ivankornienko31.stepikclientapplication.auth.navigation.AuthRoute
-import com.github.ivankornienko31.stepikclientapplication.auth.ui.AuthScreen
 import com.github.ivankornienko31.stepikclientapplication.datastore.OnboardingPreferences
+import com.github.ivankornienko31.stepikclientapplication.screens.auth.presentation.AuthScreen
 import com.github.ivankornienko31.stepikclientapplication.screens.greeting.presentation.GreetingScreen
 import com.github.ivankornienko31.stepikclientapplication.screens.login.presentation.LoginScreen
 import com.github.ivankornienko31.stepikclientapplication.screens.main.presentation.MainStepikScreen

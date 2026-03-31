@@ -1,6 +1,6 @@
-package com.github.ivankornienko31.stepikclientapplication.auth.data.dto
+package com.github.ivankornienko31.stepikclientapplication.screens.auth.data.dto
 
-import com.github.ivankornienko31.stepikclientapplication.auth.domain.entity.Token
+import com.github.ivankornienko31.stepikclientapplication.screens.auth.domain.entity.Token
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlin.String

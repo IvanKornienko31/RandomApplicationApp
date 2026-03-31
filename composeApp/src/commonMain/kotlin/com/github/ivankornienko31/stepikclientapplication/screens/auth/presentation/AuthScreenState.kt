@@ -1,6 +1,4 @@
-package com.github.ivankornienko31.stepikclientapplication.auth.ui
-
-import org.jetbrains.compose.resources.StringResource
+package com.github.ivankornienko31.stepikclientapplication.screens.auth.presentation
 
 sealed interface AuthScreenState {
     data object WebViewAuth : AuthScreenState
