@@ -12,7 +12,6 @@ class OnboardingPreferences(private val dataStore: DataStore<Preferences>) {
         val IS_FIRST_LAUNCH = booleanPreferencesKey("is_first_launch")
     }
 
-    // Если ключа еще нет, считаем, что это первый запуск (true)
     val isFirstLaunch: Flow<Boolean> = dataStore.data.map { preferences ->
         preferences[IS_FIRST_LAUNCH] ?: true
     }

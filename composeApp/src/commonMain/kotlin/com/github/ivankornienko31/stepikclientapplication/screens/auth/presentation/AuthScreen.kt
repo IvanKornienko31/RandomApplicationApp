@@ -7,6 +7,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,8 +21,6 @@ fun AuthScreen(
     onNavigateToMain: () -> Unit
 ) {
     val uiState by viewModel.screenState.collectAsStateWithLifecycle()
-
-//    Scaffold { }
 
     when (val current = uiState) {
         is AuthScreenState.WebViewAuth -> {
@@ -40,7 +39,11 @@ fun AuthScreen(
                 CircularProgressIndicator()
             }
         }
-        is AuthScreenState.Success -> { onNavigateToMain() }
+        is AuthScreenState.Success -> {
+            LaunchedEffect(Unit) {
+                onNavigateToMain()
+            }
+        }
         is AuthScreenState.Error -> {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(

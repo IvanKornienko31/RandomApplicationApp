@@ -1,6 +1,8 @@
 package com.github.ivankornienko31.stepikclientapplication
 
 import androidx.compose.ui.window.ComposeUIViewController
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import com.github.ivankornienko31.stepikclientapplication.datastore.OnboardingPreferences
 import com.github.ivankornienko31.stepikclientapplication.datastore.createDataStore
 import com.github.ivankornienko31.stepikclientapplication.di.initKoin
@@ -11,7 +13,7 @@ fun MainViewController() = ComposeUIViewController(
     configure = {
         val platformModule = module {
             val dataStore = createDataStore()
-            single { OnboardingPreferences(dataStore) }
+            single<DataStore<Preferences>> { dataStore }
         }
         initKoin(platformDependencies = platformModule)
     }

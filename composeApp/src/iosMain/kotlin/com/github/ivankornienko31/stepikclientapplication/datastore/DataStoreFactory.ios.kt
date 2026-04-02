@@ -19,7 +19,7 @@ fun createDataStore(): DataStore<Preferences> {
                 create = false,
                 error = null,
             )
-            requireNotNull(documentDirectory).path + "/onboarding.preferences_pb"
+            requireNotNull(documentDirectory).path + "/app_settings.preferences_pb"
         }
     )
 }

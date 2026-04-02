@@ -7,6 +7,7 @@ import com.github.ivankornienko31.stepikclientapplication.screens.main.data.remo
 import com.github.ivankornienko31.stepikclientapplication.screens.main.domain.PaginatedResult
 import com.github.ivankornienko31.stepikclientapplication.screens.main.domain.StepikCoursesRepository
 import io.github.aakira.napier.Napier
+import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
@@ -15,8 +16,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
 
-class StepikCoursesRepositoryImpl : StepikCoursesRepository {
-    private val client = stepikHttpClient()
+class StepikCoursesRepositoryImpl(
+    private val client: HttpClient
+) : StepikCoursesRepository {
     private val baseUrl = "https://stepik.org/api"
 
     override suspend fun getCourses(page: Int, pagesToLoad: Int): Result<PaginatedResult> {

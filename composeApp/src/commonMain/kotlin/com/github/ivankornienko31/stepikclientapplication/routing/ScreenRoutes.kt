@@ -15,10 +15,10 @@ import kotlinx.serialization.Serializable
 object GreetingScreenRoute
 
 @Serializable
-data object AuthRoute
+data class LoginScreenRoute(val id: String)
 
 @Serializable
-data class LoginScreenRoute(val id: String)
+data object AuthRoute
 
 @Serializable
 object MainScreenRoute

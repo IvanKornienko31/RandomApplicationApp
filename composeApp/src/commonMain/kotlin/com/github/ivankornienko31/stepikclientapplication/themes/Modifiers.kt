@@ -15,22 +15,22 @@ import androidx.compose.ui.draw.clip
  * @author Иван Корниенко
  */
 
-class CustomModifiers {
-    companion object {
-        val scaffoldModifier: Modifier = Modifier.fillMaxSize()
-        val flexModifier: Modifier = scaffoldModifier
-        val constraintModifier: (PaddingValues) -> Modifier = { innerPadding ->
-            Modifier.fillMaxSize()
-                .padding(innerPadding)
-                .padding(CustomDimens.paddingFromEdges)
-        }
-        val inputModifier: Modifier = Modifier.fillMaxWidth()
-        val buttonModifier: Modifier =
-            Modifier.fillMaxWidth().heightIn(min = CustomDimens.buttonHeight)
-        val pictureModifier: Modifier = Modifier.clip(CustomShapes.pictureShape)
-            .size(CustomDimens.pictureSize)
-        val dividerModifier: Modifier =
-            Modifier.width(CustomDimens.dividerLength).clip(
-                CustomShapes.dividerShape)
+object CustomModifiers {
+    val scaffoldModifier: Modifier = Modifier.fillMaxSize()
+    val flexModifier: Modifier = scaffoldModifier
+    val constraintModifier: (PaddingValues) -> Modifier = { innerPadding ->
+        Modifier.fillMaxSize()
+            .padding(innerPadding)
+            .padding(CustomDimens.paddingFromEdges)
     }
+    val inputModifier: Modifier = Modifier.fillMaxWidth()
+    val buttonModifier: Modifier =
+        Modifier.fillMaxWidth().heightIn(min = CustomDimens.buttonHeight)
+    val pictureModifier: Modifier = Modifier.clip(CustomShapes.pictureShape)
+        .size(CustomDimens.pictureSize)
+    val dividerModifier: Modifier =
+        Modifier.width(CustomDimens.dividerLength).clip(
+            CustomShapes.dividerShape
+        )
 }
+

@@ -1,5 +1,7 @@
 package com.github.ivankornienko31.stepikclientapplication.di
 
+import com.github.ivankornienko31.stepikclientapplication.datastore.AuthPreferences
+import com.github.ivankornienko31.stepikclientapplication.datastore.OnboardingPreferences
 import com.github.ivankornienko31.stepikclientapplication.screens.auth.data.AuthRepositoryImpl
 import com.github.ivankornienko31.stepikclientapplication.screens.auth.domain.repository.AuthRepository
 import com.github.ivankornienko31.stepikclientapplication.screens.auth.domain.usecase.AuthLoginUseCase
@@ -20,7 +22,11 @@ import org.koin.dsl.bind
 
 val networkModule = module {
     // Koin создаст HttpClient один раз (single) и будет везде его переиспользовать
-    single { stepikHttpClient() }
+    single {
+        stepikHttpClient(
+            authPreferences = get()
+        )
+    }
 }
 
 val dataModule = module {
@@ -28,6 +34,11 @@ val dataModule = module {
     singleOf(::AuthRepositoryImpl) bind AuthRepository::class
     singleOf(::LoginRepositoryImpl) bind LoginRepository::class
     singleOf(::StepikCoursesRepositoryImpl) bind StepikCoursesRepository::class
+}
+
+val preferencesModule = module {
+    singleOf(::OnboardingPreferences)
+    singleOf(::AuthPreferences)
 }
 
 val domainModule = module {
@@ -42,4 +53,10 @@ val viewModelModule = module {
     viewModelOf(::StepikMainViewModel)
 }
 
-val sharedModules = listOf(networkModule, dataModule, domainModule, viewModelModule)
+val sharedModules = listOf(
+    networkModule,
+    dataModule,
+    preferencesModule,
+    domainModule,
+    viewModelModule,
+)

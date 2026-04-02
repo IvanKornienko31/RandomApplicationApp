@@ -40,6 +40,5 @@ class AuthRepositoryImpl(private val httpClient: HttpClient) :
                 response.body<TokenDto>().toDomain()
             }
         }
-
     }
 }

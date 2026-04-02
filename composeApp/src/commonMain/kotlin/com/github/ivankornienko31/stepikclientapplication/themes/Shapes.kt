@@ -8,10 +8,8 @@ import androidx.compose.ui.graphics.Shape
  * @author Иван Корниенко
  */
 
-class CustomShapes {
-    companion object {
-        val unifiedShape: Shape = RoundedCornerShape(CustomDimens.inputCornerRadius)
-        val pictureShape: Shape = RoundedCornerShape(CustomDimens.pictureCornerRadius)
-        val dividerShape: Shape = RoundedCornerShape(percent = 50)
-    }
+object CustomShapes {
+    val unifiedShape: Shape = RoundedCornerShape(CustomDimens.inputCornerRadius)
+    val pictureShape: Shape = RoundedCornerShape(CustomDimens.pictureCornerRadius)
+    val dividerShape: Shape = RoundedCornerShape(percent = 50)
 }

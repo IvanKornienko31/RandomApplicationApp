@@ -1,5 +1,6 @@
 package com.github.ivankornienko31.stepikclientapplication.screens.greeting.presentation
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -18,8 +19,8 @@ import coil3.compose.AsyncImage
 import com.github.ivankornienko31.stepikclientapplication.themes.CustomDimens
 import com.github.ivankornienko31.stepikclientapplication.themes.CustomModifiers
 import com.github.ivankornienko31.stepikclientapplication.themes.CustomTextStyles
+import com.github.ivankornienko31.stepikclientapplication.themes.ImageAssets
 import com.github.ivankornienko31.stepikclientapplication.themes.StepikAppTheme
-import com.skydoves.compose.stability.runtime.TraceRecomposition
 import io.github.aakira.napier.Napier
 import org.jetbrains.compose.resources.stringResource
 import stepikclientapplication.composeapp.generated.resources.Res
@@ -27,7 +28,6 @@ import stepikclientapplication.composeapp.generated.resources.greeting_button_ac
 import stepikclientapplication.composeapp.generated.resources.greeting_screen_dream
 import stepikclientapplication.composeapp.generated.resources.greeting_screen_greeting
 import stepikclientapplication.composeapp.generated.resources.greeting_screen_nice
-import stepikclientapplication.composeapp.generated.resources.greeting_screen_picture_description
 
 /**
  * [GreetingScreen] является стартовым экраном приложения
@@ -50,7 +50,7 @@ import stepikclientapplication.composeapp.generated.resources.greeting_screen_pi
 fun GreetingScreen(navigateToLogin: () -> Unit) {
     Scaffold(modifier = CustomModifiers.scaffoldModifier) { innerPadding ->
         BoxWithConstraints(
-            modifier = CustomModifiers.Companion.constraintModifier(innerPadding),
+            modifier = CustomModifiers.constraintModifier(innerPadding),
             contentAlignment = Alignment.Center
         ) {
             val isLandscape = maxWidth > maxHeight
@@ -102,16 +102,22 @@ fun GreetingScreen(navigateToLogin: () -> Unit) {
  *
  * @author Иван Корниенко*/
 
-@TraceRecomposition
 @Composable
 fun LoadedImage() {
     Box(
         modifier = CustomModifiers.pictureModifier
     ) {
+        val isDarkThemeEnabled = isSystemInDarkTheme()
+
+        val model: String = when {
+            isDarkThemeEnabled -> ImageAssets.STEPIK_LOGO_DARK
+            else -> ImageAssets.STEPIK_LOGO_LIGHT
+        }
+
         AsyncImage(
-            model = "https://redditinc.com/hs-fs/hubfs/Reddit%20Inc/Content/Brand%20Page/Reddit_Logo.png",
+            model = model,
             onSuccess = { Napier.d(tag = "Image state") { "Image was loaded successfully" } },
-            contentDescription = stringResource(Res.string.greeting_screen_picture_description),
+            contentDescription = null,
             contentScale = ContentScale.Crop
         )
     }
