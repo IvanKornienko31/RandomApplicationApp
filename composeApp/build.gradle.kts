@@ -1,5 +1,6 @@
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import com.codingfeline.buildkonfig.compiler.FieldSpec
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -9,6 +10,25 @@ plugins {
     alias(libs.plugins.riflesso)
     alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.stability.analyzer)
+    alias(libs.plugins.build.konfig)
+}
+
+val localPropertiesFile: File = rootProject.file("local.properties")
+val localProperties = Properties().apply {
+    load(localPropertiesFile.inputStream())
+}
+
+buildkonfig {
+    packageName = "com.github.ivankornienko31"
+    objectName = "StepikClientApp"
+
+    val clientId = localProperties["stepik.client.id"] as String
+    val clientSecret = localProperties["stepik.client.secret"] as String
+
+    defaultConfigs {
+        buildConfigField(FieldSpec.Type.STRING,"STEPIK_CLIENT_ID", clientId)
+        buildConfigField(FieldSpec.Type.STRING,"STEPIK_CLIENT_SECRET", clientSecret)
+    }
 }
 
 kotlin {
@@ -32,8 +52,9 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.androidx.activity.compose)
-            implementation(libs.coil.network.android)
             implementation(libs.riflesso)
+            implementation(libs.ktor.client.android)
+            implementation(libs.koin.android)
         }
         commonMain.dependencies {
             implementation(libs.compose.runtime)
@@ -48,14 +69,25 @@ kotlin {
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.napier)
             implementation(libs.coil.compose)
-            implementation(libs.material.icons.core)
+            implementation(libs.material.icons.core)      // Remove before update
+            implementation(libs.ktor.client.engine)
+            implementation(libs.ktor.client.logging)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.serialization.json)
+            implementation(libs.ktor.client.auth)
+            implementation(libs.kotlinx.coroutines.core)
+            implementation(libs.coil.network.ktor)
+            implementation(libs.androidx.datastore.preferences.core)
+            implementation(libs.okio)
+            implementation(libs.koin.core)
+            implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewmodel)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
         iosMain.dependencies {
-            implementation(libs.ktor.ios)
-            implementation(libs.coil.network.ios)
+            implementation(libs.ktor.client.ios)
         }
     }
 }

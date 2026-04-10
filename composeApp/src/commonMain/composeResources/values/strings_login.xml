@@ -9,5 +9,5 @@
     <string name="text_field_password_label">Password</string>
     <string name="text_field_password_placeholder">Enter password</string>
     <string name="input_field_incorrect_password_length">The password must be longer than 8 characters</string>
-    <string name="login_button_action">Login</string>
+    <string name="authorization_button">Sign in via Stepik</string>
 </resources>
